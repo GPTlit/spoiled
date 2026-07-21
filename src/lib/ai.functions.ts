@@ -4,6 +4,19 @@ import { chatCompletion } from "./ai-gateway.server";
 
 const MapInput = z.object({ query: z.string().min(1).max(300) });
 
+export type SourceMapping = {
+  input_title: string;
+  input_type: string;
+  franchise: string;
+  has_source: boolean;
+  source: { type: string; title: string; part: string };
+  location: { chapter_or_section: string; approximate: boolean };
+  confidence: number;
+  reasoning: string;
+  differences: string;
+  supported_universes_note: string;
+};
+
 export const mapSource = createServerFn({ method: "POST" })
   .inputValidator((v: unknown) => MapInput.parse(v))
   .handler(async ({ data }) => {
