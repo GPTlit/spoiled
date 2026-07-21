@@ -10,6 +10,7 @@
 
 import { Route as rootRouteImport } from './routes/__root'
 import { Route as UniversesRouteImport } from './routes/universes'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as DiscoverRouteImport } from './routes/discover'
 import { Route as ContinueRouteImport } from './routes/continue'
 import { Route as AuthRouteImport } from './routes/auth'
@@ -20,6 +21,11 @@ import { Route as AuthenticatedLibraryRouteImport } from './routes/_authenticate
 const UniversesRoute = UniversesRouteImport.update({
   id: '/universes',
   path: '/universes',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
 const DiscoverRoute = DiscoverRouteImport.update({
@@ -57,6 +63,7 @@ export interface FileRoutesByFullPath {
   '/auth': typeof AuthRoute
   '/continue': typeof ContinueRoute
   '/discover': typeof DiscoverRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/universes': typeof UniversesRoute
   '/library': typeof AuthenticatedLibraryRoute
 }
@@ -65,6 +72,7 @@ export interface FileRoutesByTo {
   '/auth': typeof AuthRoute
   '/continue': typeof ContinueRoute
   '/discover': typeof DiscoverRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/universes': typeof UniversesRoute
   '/library': typeof AuthenticatedLibraryRoute
 }
@@ -75,6 +83,7 @@ export interface FileRoutesById {
   '/auth': typeof AuthRoute
   '/continue': typeof ContinueRoute
   '/discover': typeof DiscoverRoute
+  '/sitemap.xml': typeof SitemapDotxmlRoute
   '/universes': typeof UniversesRoute
   '/_authenticated/library': typeof AuthenticatedLibraryRoute
 }
@@ -85,10 +94,18 @@ export interface FileRouteTypes {
     | '/auth'
     | '/continue'
     | '/discover'
+    | '/sitemap.xml'
     | '/universes'
     | '/library'
   fileRoutesByTo: FileRoutesByTo
-  to: '/' | '/auth' | '/continue' | '/discover' | '/universes' | '/library'
+  to:
+    | '/'
+    | '/auth'
+    | '/continue'
+    | '/discover'
+    | '/sitemap.xml'
+    | '/universes'
+    | '/library'
   id:
     | '__root__'
     | '/'
@@ -96,6 +113,7 @@ export interface FileRouteTypes {
     | '/auth'
     | '/continue'
     | '/discover'
+    | '/sitemap.xml'
     | '/universes'
     | '/_authenticated/library'
   fileRoutesById: FileRoutesById
@@ -106,6 +124,7 @@ export interface RootRouteChildren {
   AuthRoute: typeof AuthRoute
   ContinueRoute: typeof ContinueRoute
   DiscoverRoute: typeof DiscoverRoute
+  SitemapDotxmlRoute: typeof SitemapDotxmlRoute
   UniversesRoute: typeof UniversesRoute
 }
 
@@ -116,6 +135,13 @@ declare module '@tanstack/react-router' {
       path: '/universes'
       fullPath: '/universes'
       preLoaderRoute: typeof UniversesRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/discover': {
@@ -180,6 +206,7 @@ const rootRouteChildren: RootRouteChildren = {
   AuthRoute: AuthRoute,
   ContinueRoute: ContinueRoute,
   DiscoverRoute: DiscoverRoute,
+  SitemapDotxmlRoute: SitemapDotxmlRoute,
   UniversesRoute: UniversesRoute,
 }
 export const routeTree = rootRouteImport
