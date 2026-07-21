@@ -46,7 +46,7 @@ Shape:
       temperature: 0.2,
     });
     try {
-      return JSON.parse(content) as unknown;
+      return JSON.parse(content) as SourceMapping;
     } catch {
       throw new Error("The AI returned an unreadable response. Please try again.");
     }
