@@ -12,10 +12,10 @@ const search = z.object({ q: z.string().catch("") });
 export const Route = createFileRoute("/watch/$service/$title/$season/$episode")({
   validateSearch: (s) => search.parse(s),
   component: EpisodePage,
-  head: ({ params, search }) => ({
+  head: ({ params }) => ({
     meta: [
-      { title: `${search.q || params.title} S${params.season}E${params.episode} — SPOILED` },
-      { name: "description", content: `AI recap, clues, and source-material breakdown for episode ${params.episode}.` },
+      { title: `${params.title} S${params.season}E${params.episode} — SPOILED` },
+      { name: "description", content: `AI recap, clues, and source-material breakdown.` },
     ],
   }),
 });
