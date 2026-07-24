@@ -78,18 +78,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "THE SPOILED SALEM — Continue any story from where you stopped" },
+      { title: "SPOILED — Continue any story, from anywhere" },
       {
         name: "description",
         content:
-          "AI adaptation companion. Finished a show, movie, anime, or game? We map you to the exact point in the source material and continue the story in the style you choose.",
+          "SPOILED — AI adaptation companion. Continue any show, movie, anime, or game from where you stopped. Community, theories, episode breakdowns.",
       },
-      { name: "author", content: "The Spoiled Salem" },
-      { property: "og:title", content: "THE SPOILED SALEM" },
+      { name: "author", content: "Created by SPOILED SALEM" },
+      { property: "og:title", content: "SPOILED" },
       {
         property: "og:description",
-        content:
-          "Continue any story from where you stopped — mapped precisely to the original source material.",
+        content: "Continue any story from where you stopped. Created by SPOILED SALEM.",
       },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary_large_image" },
@@ -101,7 +100,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { rel: "preconnect", href: "https://fonts.gstatic.com", crossOrigin: "" },
       {
         rel: "stylesheet",
-        href: "https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Inter:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap",
+        href: "https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap",
       },
     ],
   }),
@@ -117,9 +116,8 @@ function RootShell({ children }: { children: ReactNode }) {
       <head>
         <HeadContent />
         <script
-          // Preload theme before hydration to avoid flash
           dangerouslySetInnerHTML={{
-            __html: `try{var t=localStorage.getItem('spoiled-theme');if(t==='light'){document.documentElement.classList.add('light')}}catch(e){}`,
+            __html: `try{var t=localStorage.getItem('spoiled-theme');if(t==='light'){document.documentElement.classList.remove('dark');document.documentElement.classList.add('light')}}catch(e){}`,
           }}
         />
       </head>
