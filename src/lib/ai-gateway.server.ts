@@ -13,7 +13,7 @@ export async function chatCompletion(opts: {
   const key = process.env.LOVABLE_API_KEY;
   if (!key) throw new Error("Missing LOVABLE_API_KEY");
   const body: Record<string, unknown> = {
-    model: opts.model ?? "google/gemini-3-flash-preview",
+    model: opts.model ?? "google/gemini-3.6-flash",
     messages: opts.messages,
     temperature: opts.temperature ?? 0.7,
   };
