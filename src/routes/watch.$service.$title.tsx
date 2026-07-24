@@ -12,10 +12,10 @@ const search = z.object({ q: z.string().catch("") });
 export const Route = createFileRoute("/watch/$service/$title")({
   validateSearch: (s) => search.parse(s),
   component: TitlePage,
-  head: ({ params, search }) => ({
+  head: ({ params }) => ({
     meta: [
-      { title: `${search.q || params.title} — SPOILED` },
-      { name: "description", content: `AI-powered breakdown of ${search.q || params.title} on ${params.service}.` },
+      { title: `${params.title} — SPOILED` },
+      { name: "description", content: `AI-powered breakdown on ${params.service}.` },
     ],
   }),
 });
