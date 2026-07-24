@@ -114,14 +114,14 @@
 
 @utility grain {
   position: relative;
-}
-@utility grain::after {
-  content: "";
-  position: absolute; inset: 0; pointer-events: none;
-  background-image: radial-gradient(color-mix(in oklab, var(--foreground) 10%, transparent) 1px, transparent 1px);
-  background-size: 3px 3px;
-  opacity: 0.04;
-  mix-blend-mode: overlay;
+  &::after {
+    content: "";
+    position: absolute; inset: 0; pointer-events: none;
+    background-image: radial-gradient(color-mix(in oklab, var(--foreground) 10%, transparent) 1px, transparent 1px);
+    background-size: 3px 3px;
+    opacity: 0.04;
+    mix-blend-mode: overlay;
+  }
 }
 
 .hero-gradient {
