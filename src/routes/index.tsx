@@ -167,14 +167,14 @@ function Home() {
   );
 }
 
-function ServiceTile({ service }: { service: { color: string; name: string; short: string } }) {
-  const light = service.color === "#FFFFFF" || service.color === "#F5F5F7";
+function ServiceTile({ service }: { service: { color: string; name: string; logo: string } }) {
   return (
     <div
-      className="flex h-14 w-full items-center justify-center rounded-lg"
-      style={{ backgroundColor: service.color, color: light ? "#0B0B0F" : "#FFFFFF" }}
+      className="flex h-16 w-full items-center justify-center overflow-hidden rounded-lg"
+      style={{ backgroundColor: service.color }}
     >
-      <div className="text-lg font-black tracking-tight">{service.short || service.name.split(" ")[0]}</div>
+      <img src={service.logo} alt={`${service.name} logo`} loading="lazy" className="h-full w-auto object-contain" />
     </div>
   );
 }
+
