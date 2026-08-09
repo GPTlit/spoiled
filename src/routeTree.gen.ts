@@ -16,10 +16,10 @@ import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
 import { Route as FeedRouteImport } from './routes/feed'
 import { Route as DiscoverRouteImport } from './routes/discover'
 import { Route as ContinueRouteImport } from './routes/continue'
-import { Route as CommunityRouteImport } from './routes/community'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as CommunityIndexRouteImport } from './routes/community.index'
 import { Route as WatchServiceRouteImport } from './routes/watch.$service'
 import { Route as OnboardingUsernameRouteImport } from './routes/onboarding.username'
 import { Route as FeedPostIdRouteImport } from './routes/feed.$postId'
@@ -65,11 +65,6 @@ const ContinueRoute = ContinueRouteImport.update({
   path: '/continue',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CommunityRoute = CommunityRouteImport.update({
-  id: '/community',
-  path: '/community',
-  getParentRoute: () => rootRouteImport,
-} as any)
 const AuthRoute = AuthRouteImport.update({
   id: '/auth',
   path: '/auth',
@@ -82,6 +77,11 @@ const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
 const IndexRoute = IndexRouteImport.update({
   id: '/',
   path: '/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunityIndexRoute = CommunityIndexRouteImport.update({
+  id: '/community/',
+  path: '/community/',
   getParentRoute: () => rootRouteImport,
 } as any)
 const WatchServiceRoute = WatchServiceRouteImport.update({
@@ -100,14 +100,14 @@ const FeedPostIdRoute = FeedPostIdRouteImport.update({
   getParentRoute: () => FeedRoute,
 } as any)
 const CommunitySalemRoute = CommunitySalemRouteImport.update({
-  id: '/salem',
-  path: '/salem',
-  getParentRoute: () => CommunityRoute,
+  id: '/community/salem',
+  path: '/community/salem',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const CommunitySlugRoute = CommunitySlugRouteImport.update({
-  id: '/$slug',
-  path: '/$slug',
-  getParentRoute: () => CommunityRoute,
+  id: '/community/$slug',
+  path: '/community/$slug',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedLibraryRoute = AuthenticatedLibraryRouteImport.update({
   id: '/library',
@@ -134,7 +134,6 @@ const WatchServiceTitleSeasonEpisodeRoute =
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/community': typeof CommunityRouteWithChildren
   '/continue': typeof ContinueRoute
   '/discover': typeof DiscoverRoute
   '/feed': typeof FeedRouteWithChildren
@@ -149,13 +148,13 @@ export interface FileRoutesByFullPath {
   '/feed/$postId': typeof FeedPostIdRoute
   '/onboarding/username': typeof OnboardingUsernameRoute
   '/watch/$service': typeof WatchServiceRouteWithChildren
+  '/community/': typeof CommunityIndexRoute
   '/watch/$service/$title': typeof WatchServiceTitleRouteWithChildren
   '/watch/$service/$title/$season/$episode': typeof WatchServiceTitleSeasonEpisodeRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/auth': typeof AuthRoute
-  '/community': typeof CommunityRouteWithChildren
   '/continue': typeof ContinueRoute
   '/discover': typeof DiscoverRoute
   '/feed': typeof FeedRouteWithChildren
@@ -170,6 +169,7 @@ export interface FileRoutesByTo {
   '/feed/$postId': typeof FeedPostIdRoute
   '/onboarding/username': typeof OnboardingUsernameRoute
   '/watch/$service': typeof WatchServiceRouteWithChildren
+  '/community': typeof CommunityIndexRoute
   '/watch/$service/$title': typeof WatchServiceTitleRouteWithChildren
   '/watch/$service/$title/$season/$episode': typeof WatchServiceTitleSeasonEpisodeRoute
 }
@@ -178,7 +178,6 @@ export interface FileRoutesById {
   '/': typeof IndexRoute
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
   '/auth': typeof AuthRoute
-  '/community': typeof CommunityRouteWithChildren
   '/continue': typeof ContinueRoute
   '/discover': typeof DiscoverRoute
   '/feed': typeof FeedRouteWithChildren
@@ -193,6 +192,7 @@ export interface FileRoutesById {
   '/feed/$postId': typeof FeedPostIdRoute
   '/onboarding/username': typeof OnboardingUsernameRoute
   '/watch/$service': typeof WatchServiceRouteWithChildren
+  '/community/': typeof CommunityIndexRoute
   '/watch/$service/$title': typeof WatchServiceTitleRouteWithChildren
   '/watch/$service/$title/$season/$episode': typeof WatchServiceTitleSeasonEpisodeRoute
 }
@@ -201,7 +201,6 @@ export interface FileRouteTypes {
   fullPaths:
     | '/'
     | '/auth'
-    | '/community'
     | '/continue'
     | '/discover'
     | '/feed'
@@ -216,13 +215,13 @@ export interface FileRouteTypes {
     | '/feed/$postId'
     | '/onboarding/username'
     | '/watch/$service'
+    | '/community/'
     | '/watch/$service/$title'
     | '/watch/$service/$title/$season/$episode'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/auth'
-    | '/community'
     | '/continue'
     | '/discover'
     | '/feed'
@@ -237,6 +236,7 @@ export interface FileRouteTypes {
     | '/feed/$postId'
     | '/onboarding/username'
     | '/watch/$service'
+    | '/community'
     | '/watch/$service/$title'
     | '/watch/$service/$title/$season/$episode'
   id:
@@ -244,7 +244,6 @@ export interface FileRouteTypes {
     | '/'
     | '/_authenticated'
     | '/auth'
-    | '/community'
     | '/continue'
     | '/discover'
     | '/feed'
@@ -259,6 +258,7 @@ export interface FileRouteTypes {
     | '/feed/$postId'
     | '/onboarding/username'
     | '/watch/$service'
+    | '/community/'
     | '/watch/$service/$title'
     | '/watch/$service/$title/$season/$episode'
   fileRoutesById: FileRoutesById
@@ -267,7 +267,6 @@ export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
   AuthRoute: typeof AuthRoute
-  CommunityRoute: typeof CommunityRouteWithChildren
   ContinueRoute: typeof ContinueRoute
   DiscoverRoute: typeof DiscoverRoute
   FeedRoute: typeof FeedRouteWithChildren
@@ -275,7 +274,10 @@ export interface RootRouteChildren {
   TheoriesRoute: typeof TheoriesRoute
   UniversesRoute: typeof UniversesRoute
   WatchRoute: typeof WatchRouteWithChildren
+  CommunitySlugRoute: typeof CommunitySlugRoute
+  CommunitySalemRoute: typeof CommunitySalemRoute
   OnboardingUsernameRoute: typeof OnboardingUsernameRoute
+  CommunityIndexRoute: typeof CommunityIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -329,13 +331,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof ContinueRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/community': {
-      id: '/community'
-      path: '/community'
-      fullPath: '/community'
-      preLoaderRoute: typeof CommunityRouteImport
-      parentRoute: typeof rootRouteImport
-    }
     '/auth': {
       id: '/auth'
       path: '/auth'
@@ -355,6 +350,13 @@ declare module '@tanstack/react-router' {
       path: '/'
       fullPath: '/'
       preLoaderRoute: typeof IndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community/': {
+      id: '/community/'
+      path: '/community'
+      fullPath: '/community/'
+      preLoaderRoute: typeof CommunityIndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/watch/$service': {
@@ -380,17 +382,17 @@ declare module '@tanstack/react-router' {
     }
     '/community/salem': {
       id: '/community/salem'
-      path: '/salem'
+      path: '/community/salem'
       fullPath: '/community/salem'
       preLoaderRoute: typeof CommunitySalemRouteImport
-      parentRoute: typeof CommunityRoute
+      parentRoute: typeof rootRouteImport
     }
     '/community/$slug': {
       id: '/community/$slug'
-      path: '/$slug'
+      path: '/community/$slug'
       fullPath: '/community/$slug'
       preLoaderRoute: typeof CommunitySlugRouteImport
-      parentRoute: typeof CommunityRoute
+      parentRoute: typeof rootRouteImport
     }
     '/_authenticated/library': {
       id: '/_authenticated/library'
@@ -435,20 +437,6 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
 
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
-
-interface CommunityRouteChildren {
-  CommunitySlugRoute: typeof CommunitySlugRoute
-  CommunitySalemRoute: typeof CommunitySalemRoute
-}
-
-const CommunityRouteChildren: CommunityRouteChildren = {
-  CommunitySlugRoute: CommunitySlugRoute,
-  CommunitySalemRoute: CommunitySalemRoute,
-}
-
-const CommunityRouteWithChildren = CommunityRoute._addFileChildren(
-  CommunityRouteChildren,
-)
 
 interface FeedRouteChildren {
   FeedPostIdRoute: typeof FeedPostIdRoute
@@ -497,7 +485,6 @@ const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
   AuthRoute: AuthRoute,
-  CommunityRoute: CommunityRouteWithChildren,
   ContinueRoute: ContinueRoute,
   DiscoverRoute: DiscoverRoute,
   FeedRoute: FeedRouteWithChildren,
@@ -505,7 +492,10 @@ const rootRouteChildren: RootRouteChildren = {
   TheoriesRoute: TheoriesRoute,
   UniversesRoute: UniversesRoute,
   WatchRoute: WatchRouteWithChildren,
+  CommunitySlugRoute: CommunitySlugRoute,
+  CommunitySalemRoute: CommunitySalemRoute,
   OnboardingUsernameRoute: OnboardingUsernameRoute,
+  CommunityIndexRoute: CommunityIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)

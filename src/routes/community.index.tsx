@@ -7,7 +7,7 @@ import { supabase } from "@/integrations/supabase/client";
 import { Users, Plus, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/community")({
+export const Route = createFileRoute("/community/")({
   component: CommunityPage,
   head: () => ({
     meta: [
