@@ -100,14 +100,14 @@ const FeedPostIdRoute = FeedPostIdRouteImport.update({
   getParentRoute: () => FeedRoute,
 } as any)
 const CommunitySalemRoute = CommunitySalemRouteImport.update({
-  id: '/community/salem',
-  path: '/community/salem',
-  getParentRoute: () => rootRouteImport,
+  id: '/salem',
+  path: '/salem',
+  getParentRoute: () => CommunityRoute,
 } as any)
 const CommunitySlugRoute = CommunitySlugRouteImport.update({
-  id: '/community/$slug',
-  path: '/community/$slug',
-  getParentRoute: () => rootRouteImport,
+  id: '/$slug',
+  path: '/$slug',
+  getParentRoute: () => CommunityRoute,
 } as any)
 const AuthenticatedLibraryRoute = AuthenticatedLibraryRouteImport.update({
   id: '/library',
@@ -274,8 +274,6 @@ export interface RootRouteChildren {
   TheoriesRoute: typeof TheoriesRoute
   UniversesRoute: typeof UniversesRoute
   WatchRoute: typeof WatchRouteWithChildren
-  CommunitySlugRoute: typeof CommunitySlugRoute
-  CommunitySalemRoute: typeof CommunitySalemRoute
   OnboardingUsernameRoute: typeof OnboardingUsernameRoute
   CommunityIndexRoute: typeof CommunityIndexRoute
 }
@@ -382,17 +380,17 @@ declare module '@tanstack/react-router' {
     }
     '/community/salem': {
       id: '/community/salem'
-      path: '/community/salem'
+      path: '/salem'
       fullPath: '/community/salem'
       preLoaderRoute: typeof CommunitySalemRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof CommunityRoute
     }
     '/community/$slug': {
       id: '/community/$slug'
-      path: '/community/$slug'
+      path: '/$slug'
       fullPath: '/community/$slug'
       preLoaderRoute: typeof CommunitySlugRouteImport
-      parentRoute: typeof rootRouteImport
+      parentRoute: typeof CommunityRoute
     }
     '/_authenticated/library': {
       id: '/_authenticated/library'
@@ -492,11 +490,19 @@ const rootRouteChildren: RootRouteChildren = {
   TheoriesRoute: TheoriesRoute,
   UniversesRoute: UniversesRoute,
   WatchRoute: WatchRouteWithChildren,
-  CommunitySlugRoute: CommunitySlugRoute,
-  CommunitySalemRoute: CommunitySalemRoute,
   OnboardingUsernameRoute: OnboardingUsernameRoute,
   CommunityIndexRoute: CommunityIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
   ._addFileTypes<FileRouteTypes>()
+
+import type { getRouter } from './router.tsx'
+import type { startInstance } from './start.ts'
+declare module '@tanstack/react-start' {
+  interface Register {
+    ssr: true
+    router: Awaited<ReturnType<typeof getRouter>>
+    config: Awaited<ReturnType<typeof startInstance.getOptions>>
+  }
+}
