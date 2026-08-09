@@ -349,6 +349,45 @@ export type Database = {
         }
         Relationships: []
       }
+      theories: {
+        Row: {
+          body: string
+          created_at: string
+          id: string
+          poster_url: string | null
+          show_slug: string
+          show_summary: string | null
+          show_title: string
+          sort_order: number
+          title: string
+          updated_at: string
+        }
+        Insert: {
+          body: string
+          created_at?: string
+          id?: string
+          poster_url?: string | null
+          show_slug: string
+          show_summary?: string | null
+          show_title: string
+          sort_order?: number
+          title: string
+          updated_at?: string
+        }
+        Update: {
+          body?: string
+          created_at?: string
+          id?: string
+          poster_url?: string | null
+          show_slug?: string
+          show_summary?: string | null
+          show_title?: string
+          sort_order?: number
+          title?: string
+          updated_at?: string
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           created_at: string

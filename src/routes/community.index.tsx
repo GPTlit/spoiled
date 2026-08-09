@@ -4,10 +4,10 @@ import { useEffect, useState } from "react";
 import { SiteHeader } from "@/components/site-header";
 import { listGroups, createGroup } from "@/lib/community.functions";
 import { supabase } from "@/integrations/supabase/client";
-import { Users, Plus, Loader2 } from "lucide-react";
+import { Users, Plus, Loader2, Sparkles } from "lucide-react";
 import { toast } from "sonner";
 
-export const Route = createFileRoute("/community")({
+export const Route = createFileRoute("/community/")({
   component: CommunityPage,
   head: () => ({
     meta: [
@@ -46,7 +46,7 @@ function CommunityPage() {
         <div className="mb-6 flex items-end justify-between">
           <div>
             <h1 className="text-3xl font-bold tracking-tight sm:text-4xl">Community</h1>
-            <p className="mt-1 text-sm text-muted-foreground">Discord-style fan groups. Join, chat, share.</p>
+            <p className="mt-1 text-sm text-muted-foreground">Join a group chat, share shows, clips and theories with people who care as much as you do.</p>
           </div>
           {signedIn ? (
             <button
@@ -61,6 +61,22 @@ function CommunityPage() {
             </Link>
           )}
         </div>
+
+        <Link
+          to="/community/salem"
+          className="mb-8 flex items-center gap-4 rounded-2xl border border-primary/40 bg-primary/10 p-5 transition hover:border-primary"
+        >
+          <div className="flex h-12 w-12 shrink-0 items-center justify-center rounded-full bg-primary/20 text-primary">
+            <Sparkles className="h-6 w-6" />
+          </div>
+          <div>
+            <div className="font-semibold">Talk to SALEM</div>
+            <p className="text-xs text-muted-foreground">
+              The AI who watched everything. Movies, shows, theories — and it'll spoil the ending on request.
+            </p>
+          </div>
+        </Link>
+
 
         {loading ? (
           <div className="flex justify-center py-16"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>
