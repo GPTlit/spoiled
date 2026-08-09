@@ -9,10 +9,16 @@ export const Route = createFileRoute("/watch/$service")({
   head: ({ params }) => {
     const s = findService(params.service);
     const name = s?.name ?? "Service";
-    return { meta: [
-      { title: `${name} — SPOILED` },
-      { name: "description", content: `Shows and movies on ${name}. Get AI breakdowns for any episode.` },
-    ]};
+    return {
+      meta: [
+        { title: `${name} shows — SPOILED` },
+        { name: "description", content: `Popular shows and movies on ${name}, with AI breakdowns, clues and spoilers for any episode.` },
+        { property: "og:title", content: `${name} shows — SPOILED` },
+        { property: "og:description", content: `Browse ${name} and get episode-level breakdowns.` },
+        { property: "og:type", content: "website" },
+        { name: "twitter:card", content: "summary_large_image" },
+      ],
+    };
   },
 });
 
@@ -31,16 +37,14 @@ function ServicePage() {
     navigate({ to: "/watch/$service/$title", params: { service, title: slugify(q.trim()) }, search: { q: q.trim() } });
   };
 
-  const light = s.color === "#FFFFFF" || s.color === "#F5F5F7";
-
   return (
     <div className="min-h-screen">
       <SiteHeader />
       <div className="mx-auto max-w-6xl px-4 py-8 sm:px-6">
         <Link to="/watch" className="text-xs text-muted-foreground hover:text-foreground">← All services</Link>
         <div className="mt-4 flex items-center gap-3">
-          <div className="flex h-14 w-14 items-center justify-center rounded-xl" style={{ backgroundColor: s.color, color: light ? "#0B0B0F" : "#FFFFFF" }}>
-            <div className="text-lg font-black">{s.short || s.name.split(" ")[0]}</div>
+          <div className="flex h-16 w-24 items-center justify-center overflow-hidden rounded-xl" style={{ backgroundColor: s.color }}>
+            <img src={s.logo} alt={`${s.name} logo`} className="h-full w-full object-contain" />
           </div>
           <div>
             <h1 className="text-3xl font-bold tracking-tight">{s.name}</h1>
@@ -55,7 +59,7 @@ function ServicePage() {
         </form>
 
         <h2 className="mt-8 text-lg font-semibold">Popular on {s.name}</h2>
-        <div className="mt-3 grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-4">
+        <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {titles.map((t) => (
             <Link
               key={t.title}
@@ -64,10 +68,14 @@ function ServicePage() {
               search={{ q: t.title }}
               className="group overflow-hidden rounded-xl border border-border bg-card transition hover:border-primary/60"
             >
-              <div className="flex aspect-[3/4] items-center justify-center bg-gradient-to-br from-primary/25 via-card to-card p-4 text-center">
-                <div className="text-sm font-semibold">{t.title}</div>
+              <div className="relative aspect-[2/3] overflow-hidden bg-background">
+                <img src={t.poster} alt={`${t.title} poster`} loading="lazy" className="h-full w-full object-cover transition duration-300 group-hover:scale-105" />
+                <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/90 to-transparent p-3">
+                  <div className="text-sm font-semibold text-white">{t.title}</div>
+                  <div className="text-[11px] text-white/70">{t.year ?? "—"}{t.genres.length ? ` · ${t.genres.slice(0, 2).join(", ")}` : ""}</div>
+                </div>
               </div>
-              <div className="border-t border-border p-2 text-center text-[11px] text-muted-foreground">{t.year} · {t.kind}</div>
+              <p className="line-clamp-3 p-3 text-xs leading-relaxed text-muted-foreground">{t.description}</p>
             </Link>
           ))}
         </div>
