@@ -12,8 +12,10 @@ import {
 import { listGroups } from "@/lib/community.functions";
 import { listFeed } from "@/lib/feed.functions";
 import { adminDeleteGroup } from "@/lib/admin.functions";
+import { listTheories, adminCreateTheory, adminUpdateTheory, adminDeleteTheory, type TheoryRow } from "@/lib/theories.functions";
 import { Loader2, Shield } from "lucide-react";
 import { toast } from "sonner";
+
 
 export const Route = createFileRoute("/_authenticated/admin")({
   component: AdminPage,
