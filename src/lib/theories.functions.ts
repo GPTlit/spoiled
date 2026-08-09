@@ -58,9 +58,10 @@ export const adminUpdateTheory = createServerFn({ method: "POST" })
   .inputValidator((v: unknown) => UpdateInput.parse(v))
   .handler(async ({ context, data }) => {
     await assertAdmin(context as never);
-    const patch: Record<string, unknown> = { title: data.title, body: data.body };
+    const patch: { title: string; body: string; show_summary?: string } = { title: data.title, body: data.body };
     if (data.show_summary !== undefined) patch.show_summary = data.show_summary;
     const { error } = await context.supabase.from("theories").update(patch).eq("id", data.id);
+
     if (error) throw new Error(error.message);
     return { ok: true };
   });
