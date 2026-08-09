@@ -23,7 +23,7 @@ export const Route = createFileRoute("/_authenticated/admin")({
 function AdminPage() {
   const navigate = useNavigate();
   const [ok, setOk] = useState<boolean | null>(null);
-  const [tab, setTab] = useState<"users" | "posts" | "groups" | "broadcast">("users");
+  const [tab, setTab] = useState<"users" | "posts" | "groups" | "theories" | "broadcast">("users");
 
   useEffect(() => {
     (async () => {
@@ -55,7 +55,7 @@ function AdminPage() {
           <h1 className="text-3xl font-bold tracking-tight">Admin</h1>
         </div>
         <div className="mt-6 flex gap-2 border-b border-border">
-          {(["users","posts","groups","broadcast"] as const).map((t) => (
+          {(["users","posts","groups","theories","broadcast"] as const).map((t) => (
             <button key={t} onClick={() => setTab(t)} className={`px-3 py-2 text-sm capitalize ${tab === t ? "border-b-2 border-primary text-foreground" : "text-muted-foreground"}`}>
               {t}
             </button>
@@ -65,7 +65,9 @@ function AdminPage() {
           {tab === "users" && <UsersTab />}
           {tab === "posts" && <PostsTab />}
           {tab === "groups" && <GroupsTab />}
+          {tab === "theories" && <TheoriesTab />}
           {tab === "broadcast" && <BroadcastTab />}
+
         </div>
       </div>
     </div>
