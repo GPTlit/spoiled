@@ -171,7 +171,92 @@ function GroupsTab() {
   );
 }
 
+function TheoriesTab() {
+  const run = useServerFn(listTheories);
+  const runUpdate = useServerFn(adminUpdateTheory);
+  const runCreate = useServerFn(adminCreateTheory);
+  const runDelete = useServerFn(adminDeleteTheory);
+  const [rows, setRows] = useState<TheoryRow[] | null>(null);
+  const [editing, setEditing] = useState<Record<string, { title: string; body: string }>>({});
+  const [newShow, setNewShow] = useState({ show_title: "", poster_url: "", title: "", body: "" });
+
+  const refresh = () => run().then((d) => setRows(d as TheoryRow[]));
+  useEffect(() => { refresh(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [run]);
+
+  if (!rows) return <div className="flex justify-center py-10"><Loader2 className="h-5 w-5 animate-spin text-primary" /></div>;
+
+  return (
+    <div className="space-y-6">
+      <div className="rounded-xl border border-border bg-card p-4">
+        <div className="mb-3 text-sm font-semibold">Add a theory</div>
+        <div className="grid gap-2 sm:grid-cols-2">
+          <input value={newShow.show_title} onChange={(e) => setNewShow({ ...newShow, show_title: e.target.value })} placeholder="Show title" className="rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary" />
+          <input value={newShow.poster_url} onChange={(e) => setNewShow({ ...newShow, poster_url: e.target.value })} placeholder="Poster URL (optional)" className="rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary" />
+        </div>
+        <input value={newShow.title} onChange={(e) => setNewShow({ ...newShow, title: e.target.value })} placeholder="Theory headline" className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary" />
+        <textarea value={newShow.body} onChange={(e) => setNewShow({ ...newShow, body: e.target.value })} rows={3} placeholder="Theory body" className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary" />
+        <button
+          onClick={async () => {
+            try {
+              await runCreate({ data: { show_title: newShow.show_title, poster_url: newShow.poster_url || undefined, title: newShow.title, body: newShow.body } });
+              setNewShow({ show_title: "", poster_url: "", title: "", body: "" });
+              toast.success("Theory added.");
+              refresh();
+            } catch (e) { toast.error((e as Error).message); }
+          }}
+          disabled={!newShow.show_title.trim() || !newShow.title.trim() || newShow.body.trim().length < 5}
+          className="mt-3 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:brightness-110 disabled:opacity-60"
+        >Add theory</button>
+      </div>
+
+      <div className="space-y-3">
+        {rows.map((t) => {
+          const draft = editing[t.id] ?? { title: t.title, body: t.body };
+          const dirty = draft.title !== t.title || draft.body !== t.body;
+          return (
+            <div key={t.id} className="rounded-xl border border-border bg-card p-4">
+              <div className="mb-2 text-xs uppercase tracking-wider text-muted-foreground">{t.show_title}</div>
+              <input
+                value={draft.title}
+                onChange={(e) => setEditing({ ...editing, [t.id]: { ...draft, title: e.target.value } })}
+                className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-semibold outline-none focus:border-primary"
+              />
+              <textarea
+                value={draft.body}
+                onChange={(e) => setEditing({ ...editing, [t.id]: { ...draft, body: e.target.value } })}
+                rows={4}
+                className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary"
+              />
+              <div className="mt-2 flex gap-2">
+                <button
+                  disabled={!dirty}
+                  onClick={async () => {
+                    try {
+                      await runUpdate({ data: { id: t.id, title: draft.title, body: draft.body } });
+                      toast.success("Saved.");
+                      refresh();
+                    } catch (e) { toast.error((e as Error).message); }
+                  }}
+                  className="rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground disabled:opacity-50"
+                >Save</button>
+                <button
+                  onClick={async () => {
+                    if (!confirm("Delete this theory?")) return;
+                    try { await runDelete({ data: { id: t.id } }); setRows((prev) => (prev ?? []).filter((x) => x.id !== t.id)); } catch (e) { toast.error((e as Error).message); }
+                  }}
+                  className="rounded-full bg-destructive/25 px-3 py-1 text-xs font-semibold text-destructive"
+                >Delete</button>
+              </div>
+            </div>
+          );
+        })}
+      </div>
+    </div>
+  );
+}
+
 function BroadcastTab() {
+
   const run = useServerFn(adminBroadcast);
   const [msg, setMsg] = useState("");
   const [busy, setBusy] = useState(false);
