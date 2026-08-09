@@ -23,6 +23,7 @@ import { Route as IndexRouteImport } from './routes/index'
 import { Route as WatchServiceRouteImport } from './routes/watch.$service'
 import { Route as OnboardingUsernameRouteImport } from './routes/onboarding.username'
 import { Route as FeedPostIdRouteImport } from './routes/feed.$postId'
+import { Route as CommunitySalemRouteImport } from './routes/community.salem'
 import { Route as CommunitySlugRouteImport } from './routes/community.$slug'
 import { Route as AuthenticatedLibraryRouteImport } from './routes/_authenticated/library'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
@@ -98,6 +99,11 @@ const FeedPostIdRoute = FeedPostIdRouteImport.update({
   path: '/$postId',
   getParentRoute: () => FeedRoute,
 } as any)
+const CommunitySalemRoute = CommunitySalemRouteImport.update({
+  id: '/salem',
+  path: '/salem',
+  getParentRoute: () => CommunityRoute,
+} as any)
 const CommunitySlugRoute = CommunitySlugRouteImport.update({
   id: '/$slug',
   path: '/$slug',
@@ -139,6 +145,7 @@ export interface FileRoutesByFullPath {
   '/admin': typeof AuthenticatedAdminRoute
   '/library': typeof AuthenticatedLibraryRoute
   '/community/$slug': typeof CommunitySlugRoute
+  '/community/salem': typeof CommunitySalemRoute
   '/feed/$postId': typeof FeedPostIdRoute
   '/onboarding/username': typeof OnboardingUsernameRoute
   '/watch/$service': typeof WatchServiceRouteWithChildren
@@ -159,6 +166,7 @@ export interface FileRoutesByTo {
   '/admin': typeof AuthenticatedAdminRoute
   '/library': typeof AuthenticatedLibraryRoute
   '/community/$slug': typeof CommunitySlugRoute
+  '/community/salem': typeof CommunitySalemRoute
   '/feed/$postId': typeof FeedPostIdRoute
   '/onboarding/username': typeof OnboardingUsernameRoute
   '/watch/$service': typeof WatchServiceRouteWithChildren
@@ -181,6 +189,7 @@ export interface FileRoutesById {
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/library': typeof AuthenticatedLibraryRoute
   '/community/$slug': typeof CommunitySlugRoute
+  '/community/salem': typeof CommunitySalemRoute
   '/feed/$postId': typeof FeedPostIdRoute
   '/onboarding/username': typeof OnboardingUsernameRoute
   '/watch/$service': typeof WatchServiceRouteWithChildren
@@ -203,6 +212,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/library'
     | '/community/$slug'
+    | '/community/salem'
     | '/feed/$postId'
     | '/onboarding/username'
     | '/watch/$service'
@@ -223,6 +233,7 @@ export interface FileRouteTypes {
     | '/admin'
     | '/library'
     | '/community/$slug'
+    | '/community/salem'
     | '/feed/$postId'
     | '/onboarding/username'
     | '/watch/$service'
@@ -244,6 +255,7 @@ export interface FileRouteTypes {
     | '/_authenticated/admin'
     | '/_authenticated/library'
     | '/community/$slug'
+    | '/community/salem'
     | '/feed/$postId'
     | '/onboarding/username'
     | '/watch/$service'
@@ -366,6 +378,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof FeedPostIdRouteImport
       parentRoute: typeof FeedRoute
     }
+    '/community/salem': {
+      id: '/community/salem'
+      path: '/salem'
+      fullPath: '/community/salem'
+      preLoaderRoute: typeof CommunitySalemRouteImport
+      parentRoute: typeof CommunityRoute
+    }
     '/community/$slug': {
       id: '/community/$slug'
       path: '/$slug'
@@ -419,10 +438,12 @@ const AuthenticatedRouteRouteWithChildren =
 
 interface CommunityRouteChildren {
   CommunitySlugRoute: typeof CommunitySlugRoute
+  CommunitySalemRoute: typeof CommunitySalemRoute
 }
 
 const CommunityRouteChildren: CommunityRouteChildren = {
   CommunitySlugRoute: CommunitySlugRoute,
+  CommunitySalemRoute: CommunitySalemRoute,
 }
 
 const CommunityRouteWithChildren = CommunityRoute._addFileChildren(
