@@ -121,12 +121,16 @@ function SalemPage() {
     setHistoryOpen(false);
     setActiveId(id);
     try {
-      const rows = (await loadConv({ data: { id } })) as {
+      const rows = (await loadConv({ data: { id } })) as unknown as {
         role: "user" | "assistant";
         content: string;
-        attachments: SalemAttachment[];
+        attachments: SalemAttachment[] | null;
       }[];
-      setMessages(rows.length ? rows.map((r) => ({ role: r.role, content: r.content, attachments: r.attachments })) : [GREETING]);
+      setMessages(
+        rows.length
+          ? rows.map((r) => ({ role: r.role, content: r.content, attachments: r.attachments ?? [] }))
+          : [GREETING],
+      );
     } catch (err) {
       toast.error((err as Error).message);
     }
