@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ThemeToggle } from "./theme-toggle";
 import { NotificationsBell } from "./notifications-bell";
+import { LanguageSwitcher } from "./language-switcher";
 import { LogOut } from "lucide-react";
 
 export function SiteHeader() {
