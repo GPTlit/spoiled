@@ -64,7 +64,7 @@ const GREETING: Msg = {
 
 function SalemPage() {
   const navigate = useNavigate();
-  const { t } = useI18n();
+  const { t, lang } = useI18n();
   const send = useServerFn(salemSend);
   const loadList = useServerFn(listSalemConversations);
   const loadConv = useServerFn(getSalemConversation);
