@@ -37,6 +37,7 @@ export function SiteHeader() {
           <NavLink to="/library" active={path.startsWith("/library")}>Library</NavLink>
         </nav>
         <div className="flex items-center gap-2">
+          <LanguageSwitcher />
           <ThemeToggle />
           {userId ? (
             <>
