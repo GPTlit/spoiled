@@ -212,7 +212,7 @@ function SalemPage() {
           text: trimmed,
           attachments: attachments.map((a) => ({ url: a.url, kind: a.kind, name: a.name })),
           spoilers,
-          lang: "en",
+          lang,
         },
       });
       setActiveId(res.conversationId);
