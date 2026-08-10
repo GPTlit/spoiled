@@ -2,6 +2,8 @@ import { supabase } from "@/integrations/supabase/client";
 
 export type UploadResult = { path: string; url: string };
 
+export type MediaBucket = "chat-media" | "feed-media" | "salem-media" | "studio-media";
+
 const MAX_SIZES: Record<string, number> = {
   image: 10 * 1024 * 1024,
   video: 60 * 1024 * 1024,
@@ -9,7 +11,7 @@ const MAX_SIZES: Record<string, number> = {
 };
 
 export async function uploadMedia(
-  bucket: "chat-media" | "feed-media",
+  bucket: MediaBucket,
   file: Blob | File,
   kind: "image" | "video" | "audio",
   ext?: string,

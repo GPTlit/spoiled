@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { supabase } from "@/integrations/supabase/client";
 import { ThemeToggle } from "./theme-toggle";
 import { NotificationsBell } from "./notifications-bell";
+import { LanguageSwitcher } from "./language-switcher";
 import { LogOut } from "lucide-react";
 
 export function SiteHeader() {
@@ -36,6 +37,7 @@ export function SiteHeader() {
           <NavLink to="/library" active={path.startsWith("/library")}>Library</NavLink>
         </nav>
         <div className="flex items-center gap-2">
+          <LanguageSwitcher />
           <ThemeToggle />
           {userId ? (
             <>

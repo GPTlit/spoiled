@@ -74,6 +74,92 @@ export type Database = {
         }
         Relationships: []
       }
+      conversation_pins: {
+        Row: {
+          created_at: string
+          kind: string
+          ref_id: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          kind: string
+          ref_id: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          kind?: string
+          ref_id?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      dm_messages: {
+        Row: {
+          content: string | null
+          created_at: string
+          duration_ms: number | null
+          id: string
+          kind: Database["public"]["Enums"]["message_kind"]
+          media_url: string | null
+          sender_id: string
+          thread_id: string
+        }
+        Insert: {
+          content?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          kind?: Database["public"]["Enums"]["message_kind"]
+          media_url?: string | null
+          sender_id: string
+          thread_id: string
+        }
+        Update: {
+          content?: string | null
+          created_at?: string
+          duration_ms?: number | null
+          id?: string
+          kind?: Database["public"]["Enums"]["message_kind"]
+          media_url?: string | null
+          sender_id?: string
+          thread_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "dm_messages_thread_id_fkey"
+            columns: ["thread_id"]
+            isOneToOne: false
+            referencedRelation: "dm_threads"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      dm_threads: {
+        Row: {
+          created_at: string
+          id: string
+          last_message_at: string
+          user_a: string
+          user_b: string
+        }
+        Insert: {
+          created_at?: string
+          id?: string
+          last_message_at?: string
+          user_a: string
+          user_b: string
+        }
+        Update: {
+          created_at?: string
+          id?: string
+          last_message_at?: string
+          user_a?: string
+          user_b?: string
+        }
+        Relationships: []
+      }
       follows: {
         Row: {
           created_at: string
@@ -165,6 +251,7 @@ export type Database = {
           created_at: string
           created_by: string
           id: string
+          last_message_at: string
           name: string
           slug: string
           topic: string | null
@@ -174,6 +261,7 @@ export type Database = {
           created_at?: string
           created_by: string
           id?: string
+          last_message_at?: string
           name: string
           slug: string
           topic?: string | null
@@ -183,6 +271,7 @@ export type Database = {
           created_at?: string
           created_by?: string
           id?: string
+          last_message_at?: string
           name?: string
           slug?: string
           topic?: string | null
@@ -349,6 +438,208 @@ export type Database = {
         }
         Relationships: []
       }
+      salem_conversations: {
+        Row: {
+          created_at: string
+          expires_at: string
+          id: string
+          title: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          expires_at?: string
+          id?: string
+          title?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      salem_messages: {
+        Row: {
+          attachments: Json
+          content: string
+          conversation_id: string
+          created_at: string
+          id: string
+          role: string
+          user_id: string
+        }
+        Insert: {
+          attachments?: Json
+          content?: string
+          conversation_id: string
+          created_at?: string
+          id?: string
+          role: string
+          user_id: string
+        }
+        Update: {
+          attachments?: Json
+          content?: string
+          conversation_id?: string
+          created_at?: string
+          id?: string
+          role?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "salem_messages_conversation_id_fkey"
+            columns: ["conversation_id"]
+            isOneToOne: false
+            referencedRelation: "salem_conversations"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      show_books: {
+        Row: {
+          content: string
+          cover_url: string | null
+          created_at: string
+          credits: string
+          id: string
+          is_public: boolean
+          language: string
+          season_from: number
+          season_to: number
+          service: string
+          show_title: string
+          style: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content?: string
+          cover_url?: string | null
+          created_at?: string
+          credits?: string
+          id?: string
+          is_public?: boolean
+          language?: string
+          season_from?: number
+          season_to?: number
+          service?: string
+          show_title: string
+          style?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          cover_url?: string | null
+          created_at?: string
+          credits?: string
+          id?: string
+          is_public?: boolean
+          language?: string
+          season_from?: number
+          season_to?: number
+          service?: string
+          show_title?: string
+          style?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
+      sw_pages: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          image_url: string | null
+          page_index: number
+          project_id: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          page_index?: number
+          project_id: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          image_url?: string | null
+          page_index?: number
+          project_id?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "sw_pages_project_id_fkey"
+            columns: ["project_id"]
+            isOneToOne: false
+            referencedRelation: "sw_projects"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      sw_projects: {
+        Row: {
+          cover_url: string | null
+          created_at: string
+          genre: string
+          id: string
+          is_public: boolean
+          language: string
+          logline: string
+          style: string
+          title: string
+          tone: string
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          cover_url?: string | null
+          created_at?: string
+          genre?: string
+          id?: string
+          is_public?: boolean
+          language?: string
+          logline?: string
+          style?: string
+          title?: string
+          tone?: string
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          cover_url?: string | null
+          created_at?: string
+          genre?: string
+          id?: string
+          is_public?: boolean
+          language?: string
+          logline?: string
+          style?: string
+          title?: string
+          tone?: string
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: []
+      }
       theories: {
         Row: {
           body: string
@@ -419,6 +710,10 @@ export type Database = {
           _role: Database["public"]["Enums"]["app_role"]
           _user_id: string
         }
+        Returns: boolean
+      }
+      is_dm_participant: {
+        Args: { _thread: string; _user: string }
         Returns: boolean
       }
       is_group_member: {
