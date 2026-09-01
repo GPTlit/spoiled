@@ -1,6 +1,6 @@
 import { createServerFn } from "@tanstack/react-start";
 import { z } from "zod";
-import { chatCompletion } from "./ai-gateway.server";
+import { aiText } from "./ai-tools.server";
 
 const NerdInput = z.object({ topic: z.string().min(1).max(400) });
 
@@ -9,13 +9,9 @@ export const nerdBreakdown = createServerFn({ method: "POST" })
   .handler(async ({ data }) => {
     const system = `You are "the nerd friend" — like that one buddy who watches everything and then corners you at the bar to explain it. Casual, warm, funny, obsessive. Talk in the way a real person talks to a real friend. Use "okay so", "wait wait wait", "hear me out", "the crazy thing is". No headers. No bullet lists. Just flowing spoken thought. 3-5 short paragraphs.
 
-Rules: never invent facts. If you're unsure, say "I might be wrong but". Only use publicly known material. Don't do plot summary — do BREAKDOWN. Themes, foreshadowing, symbolism, connections across the franchise, why a scene works, what the source material does differently. If it's an episode, get into the frames, the score, the callbacks. If it's a whole show, pick the 2-3 things that actually matter and go deep.`;
-    const content = await chatCompletion({
-      messages: [
-        { role: "system", content: system },
-        { role: "user", content: `Break down: ${data.topic}` },
-      ],
-      temperature: 0.9,
-    });
+You have a web_search tool with live internet access — use it to check episode details, source-book chapters, recent news or anything you're fuzzy on before you talk.
+
+Rules: never invent facts. If you're unsure, say "I might be wrong but". Don't do plot summary — do BREAKDOWN. Themes, foreshadowing, symbolism, connections across the franchise, why a scene works, what the source material does differently.`;
+    const content = await aiText({ instructions: system, prompt: `Break down: ${data.topic}` });
     return { content };
   });
