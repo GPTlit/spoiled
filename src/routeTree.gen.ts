@@ -26,8 +26,11 @@ import { Route as FeedPostIdRouteImport } from './routes/feed.$postId'
 import { Route as CommunitySalemRouteImport } from './routes/community.salem'
 import { Route as CommunitySlugRouteImport } from './routes/community.$slug'
 import { Route as AuthenticatedLibraryRouteImport } from './routes/_authenticated/library'
+import { Route as AuthenticatedBooksRouteImport } from './routes/_authenticated/books'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedStudioIndexRouteImport } from './routes/_authenticated/studio.index'
 import { Route as WatchServiceTitleRouteImport } from './routes/watch.$service.$title'
+import { Route as AuthenticatedStudioProjectIdRouteImport } from './routes/_authenticated/studio.$projectId'
 import { Route as WatchServiceTitleSeasonEpisodeRouteImport } from './routes/watch.$service.$title.$season.$episode'
 
 const WatchRoute = WatchRouteImport.update({
@@ -114,16 +117,33 @@ const AuthenticatedLibraryRoute = AuthenticatedLibraryRouteImport.update({
   path: '/library',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedBooksRoute = AuthenticatedBooksRouteImport.update({
+  id: '/books',
+  path: '/books',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   id: '/admin',
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedStudioIndexRoute =
+  AuthenticatedStudioIndexRouteImport.update({
+    id: '/studio/',
+    path: '/studio/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const WatchServiceTitleRoute = WatchServiceTitleRouteImport.update({
   id: '/$title',
   path: '/$title',
   getParentRoute: () => WatchServiceRoute,
 } as any)
+const AuthenticatedStudioProjectIdRoute =
+  AuthenticatedStudioProjectIdRouteImport.update({
+    id: '/studio/$projectId',
+    path: '/studio/$projectId',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const WatchServiceTitleSeasonEpisodeRoute =
   WatchServiceTitleSeasonEpisodeRouteImport.update({
     id: '/$season/$episode',
@@ -142,6 +162,7 @@ export interface FileRoutesByFullPath {
   '/universes': typeof UniversesRoute
   '/watch': typeof WatchRouteWithChildren
   '/admin': typeof AuthenticatedAdminRoute
+  '/books': typeof AuthenticatedBooksRoute
   '/library': typeof AuthenticatedLibraryRoute
   '/community/$slug': typeof CommunitySlugRoute
   '/community/salem': typeof CommunitySalemRoute
@@ -149,7 +170,9 @@ export interface FileRoutesByFullPath {
   '/onboarding/username': typeof OnboardingUsernameRoute
   '/watch/$service': typeof WatchServiceRouteWithChildren
   '/community/': typeof CommunityIndexRoute
+  '/studio/$projectId': typeof AuthenticatedStudioProjectIdRoute
   '/watch/$service/$title': typeof WatchServiceTitleRouteWithChildren
+  '/studio/': typeof AuthenticatedStudioIndexRoute
   '/watch/$service/$title/$season/$episode': typeof WatchServiceTitleSeasonEpisodeRoute
 }
 export interface FileRoutesByTo {
@@ -163,6 +186,7 @@ export interface FileRoutesByTo {
   '/universes': typeof UniversesRoute
   '/watch': typeof WatchRouteWithChildren
   '/admin': typeof AuthenticatedAdminRoute
+  '/books': typeof AuthenticatedBooksRoute
   '/library': typeof AuthenticatedLibraryRoute
   '/community/$slug': typeof CommunitySlugRoute
   '/community/salem': typeof CommunitySalemRoute
@@ -170,7 +194,9 @@ export interface FileRoutesByTo {
   '/onboarding/username': typeof OnboardingUsernameRoute
   '/watch/$service': typeof WatchServiceRouteWithChildren
   '/community': typeof CommunityIndexRoute
+  '/studio/$projectId': typeof AuthenticatedStudioProjectIdRoute
   '/watch/$service/$title': typeof WatchServiceTitleRouteWithChildren
+  '/studio': typeof AuthenticatedStudioIndexRoute
   '/watch/$service/$title/$season/$episode': typeof WatchServiceTitleSeasonEpisodeRoute
 }
 export interface FileRoutesById {
@@ -186,6 +212,7 @@ export interface FileRoutesById {
   '/universes': typeof UniversesRoute
   '/watch': typeof WatchRouteWithChildren
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
+  '/_authenticated/books': typeof AuthenticatedBooksRoute
   '/_authenticated/library': typeof AuthenticatedLibraryRoute
   '/community/$slug': typeof CommunitySlugRoute
   '/community/salem': typeof CommunitySalemRoute
@@ -193,7 +220,9 @@ export interface FileRoutesById {
   '/onboarding/username': typeof OnboardingUsernameRoute
   '/watch/$service': typeof WatchServiceRouteWithChildren
   '/community/': typeof CommunityIndexRoute
+  '/_authenticated/studio/$projectId': typeof AuthenticatedStudioProjectIdRoute
   '/watch/$service/$title': typeof WatchServiceTitleRouteWithChildren
+  '/_authenticated/studio/': typeof AuthenticatedStudioIndexRoute
   '/watch/$service/$title/$season/$episode': typeof WatchServiceTitleSeasonEpisodeRoute
 }
 export interface FileRouteTypes {
@@ -209,6 +238,7 @@ export interface FileRouteTypes {
     | '/universes'
     | '/watch'
     | '/admin'
+    | '/books'
     | '/library'
     | '/community/$slug'
     | '/community/salem'
@@ -216,7 +246,9 @@ export interface FileRouteTypes {
     | '/onboarding/username'
     | '/watch/$service'
     | '/community/'
+    | '/studio/$projectId'
     | '/watch/$service/$title'
+    | '/studio/'
     | '/watch/$service/$title/$season/$episode'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -230,6 +262,7 @@ export interface FileRouteTypes {
     | '/universes'
     | '/watch'
     | '/admin'
+    | '/books'
     | '/library'
     | '/community/$slug'
     | '/community/salem'
@@ -237,7 +270,9 @@ export interface FileRouteTypes {
     | '/onboarding/username'
     | '/watch/$service'
     | '/community'
+    | '/studio/$projectId'
     | '/watch/$service/$title'
+    | '/studio'
     | '/watch/$service/$title/$season/$episode'
   id:
     | '__root__'
@@ -252,6 +287,7 @@ export interface FileRouteTypes {
     | '/universes'
     | '/watch'
     | '/_authenticated/admin'
+    | '/_authenticated/books'
     | '/_authenticated/library'
     | '/community/$slug'
     | '/community/salem'
@@ -259,7 +295,9 @@ export interface FileRouteTypes {
     | '/onboarding/username'
     | '/watch/$service'
     | '/community/'
+    | '/_authenticated/studio/$projectId'
     | '/watch/$service/$title'
+    | '/_authenticated/studio/'
     | '/watch/$service/$title/$season/$episode'
   fileRoutesById: FileRoutesById
 }
@@ -401,11 +439,25 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedLibraryRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/books': {
+      id: '/_authenticated/books'
+      path: '/books'
+      fullPath: '/books'
+      preLoaderRoute: typeof AuthenticatedBooksRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/admin': {
       id: '/_authenticated/admin'
       path: '/admin'
       fullPath: '/admin'
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/studio/': {
+      id: '/_authenticated/studio/'
+      path: '/studio'
+      fullPath: '/studio/'
+      preLoaderRoute: typeof AuthenticatedStudioIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/watch/$service/$title': {
@@ -414,6 +466,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/watch/$service/$title'
       preLoaderRoute: typeof WatchServiceTitleRouteImport
       parentRoute: typeof WatchServiceRoute
+    }
+    '/_authenticated/studio/$projectId': {
+      id: '/_authenticated/studio/$projectId'
+      path: '/studio/$projectId'
+      fullPath: '/studio/$projectId'
+      preLoaderRoute: typeof AuthenticatedStudioProjectIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/watch/$service/$title/$season/$episode': {
       id: '/watch/$service/$title/$season/$episode'
@@ -427,12 +486,18 @@ declare module '@tanstack/react-router' {
 
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
+  AuthenticatedBooksRoute: typeof AuthenticatedBooksRoute
   AuthenticatedLibraryRoute: typeof AuthenticatedLibraryRoute
+  AuthenticatedStudioProjectIdRoute: typeof AuthenticatedStudioProjectIdRoute
+  AuthenticatedStudioIndexRoute: typeof AuthenticatedStudioIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
+  AuthenticatedBooksRoute: AuthenticatedBooksRoute,
   AuthenticatedLibraryRoute: AuthenticatedLibraryRoute,
+  AuthenticatedStudioProjectIdRoute: AuthenticatedStudioProjectIdRoute,
+  AuthenticatedStudioIndexRoute: AuthenticatedStudioIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
