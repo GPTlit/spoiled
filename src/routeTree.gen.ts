@@ -27,6 +27,7 @@ import { Route as CommunitySalemRouteImport } from './routes/community.salem'
 import { Route as CommunitySlugRouteImport } from './routes/community.$slug'
 import { Route as AuthenticatedLibraryRouteImport } from './routes/_authenticated/library'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedStudioIndexRouteImport } from './routes/_authenticated/studio.index'
 import { Route as WatchServiceTitleRouteImport } from './routes/watch.$service.$title'
 import { Route as WatchServiceTitleSeasonEpisodeRouteImport } from './routes/watch.$service.$title.$season.$episode'
 
@@ -119,6 +120,12 @@ const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
   path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedStudioIndexRoute =
+  AuthenticatedStudioIndexRouteImport.update({
+    id: '/studio/',
+    path: '/studio/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const WatchServiceTitleRoute = WatchServiceTitleRouteImport.update({
   id: '/$title',
   path: '/$title',
@@ -150,6 +157,7 @@ export interface FileRoutesByFullPath {
   '/watch/$service': typeof WatchServiceRouteWithChildren
   '/community/': typeof CommunityIndexRoute
   '/watch/$service/$title': typeof WatchServiceTitleRouteWithChildren
+  '/studio/': typeof AuthenticatedStudioIndexRoute
   '/watch/$service/$title/$season/$episode': typeof WatchServiceTitleSeasonEpisodeRoute
 }
 export interface FileRoutesByTo {
@@ -171,6 +179,7 @@ export interface FileRoutesByTo {
   '/watch/$service': typeof WatchServiceRouteWithChildren
   '/community': typeof CommunityIndexRoute
   '/watch/$service/$title': typeof WatchServiceTitleRouteWithChildren
+  '/studio': typeof AuthenticatedStudioIndexRoute
   '/watch/$service/$title/$season/$episode': typeof WatchServiceTitleSeasonEpisodeRoute
 }
 export interface FileRoutesById {
@@ -194,6 +203,7 @@ export interface FileRoutesById {
   '/watch/$service': typeof WatchServiceRouteWithChildren
   '/community/': typeof CommunityIndexRoute
   '/watch/$service/$title': typeof WatchServiceTitleRouteWithChildren
+  '/_authenticated/studio/': typeof AuthenticatedStudioIndexRoute
   '/watch/$service/$title/$season/$episode': typeof WatchServiceTitleSeasonEpisodeRoute
 }
 export interface FileRouteTypes {
@@ -217,6 +227,7 @@ export interface FileRouteTypes {
     | '/watch/$service'
     | '/community/'
     | '/watch/$service/$title'
+    | '/studio/'
     | '/watch/$service/$title/$season/$episode'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -238,6 +249,7 @@ export interface FileRouteTypes {
     | '/watch/$service'
     | '/community'
     | '/watch/$service/$title'
+    | '/studio'
     | '/watch/$service/$title/$season/$episode'
   id:
     | '__root__'
@@ -260,6 +272,7 @@ export interface FileRouteTypes {
     | '/watch/$service'
     | '/community/'
     | '/watch/$service/$title'
+    | '/_authenticated/studio/'
     | '/watch/$service/$title/$season/$episode'
   fileRoutesById: FileRoutesById
 }
@@ -408,6 +421,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/studio/': {
+      id: '/_authenticated/studio/'
+      path: '/studio'
+      fullPath: '/studio/'
+      preLoaderRoute: typeof AuthenticatedStudioIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/watch/$service/$title': {
       id: '/watch/$service/$title'
       path: '/$title'
@@ -428,11 +448,13 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedLibraryRoute: typeof AuthenticatedLibraryRoute
+  AuthenticatedStudioIndexRoute: typeof AuthenticatedStudioIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedLibraryRoute: AuthenticatedLibraryRoute,
+  AuthenticatedStudioIndexRoute: AuthenticatedStudioIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =

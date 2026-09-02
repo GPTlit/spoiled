@@ -22,6 +22,8 @@ export const Route = createFileRoute("/_authenticated/studio/")({
 
 type Project = Awaited<ReturnType<typeof listProjects>>[number];
 
+const inputCls = "w-full rounded-xl border border-border bg-background/60 px-3 py-2 text-sm outline-none focus:border-primary";
+
 const STYLES = ["Screenplay", "Novel", "Treatment", "Stage play"];
 
 function StudioIndex() {
@@ -114,18 +116,18 @@ function StudioIndex() {
           <div className="w-full max-w-lg rounded-2xl border border-border bg-card p-5">
             <h2 className="text-lg font-bold">New project</h2>
             <div className="mt-4 space-y-3">
-              <Field label="Title"><input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className="input" placeholder="Untitled" /></Field>
-              <Field label="Logline"><textarea value={form.logline} onChange={(e) => setForm({ ...form, logline: e.target.value })} rows={2} className="input" placeholder="A hitman with amnesia..." /></Field>
+              <Field label="Title"><input value={form.title} onChange={(e) => setForm({ ...form, title: e.target.value })} className={inputCls} placeholder="Untitled" /></Field>
+              <Field label="Logline"><textarea value={form.logline} onChange={(e) => setForm({ ...form, logline: e.target.value })} rows={2} className={inputCls} placeholder="A hitman with amnesia..." /></Field>
               <div className="grid grid-cols-2 gap-3">
-                <Field label="Genre"><input value={form.genre} onChange={(e) => setForm({ ...form, genre: e.target.value })} className="input" placeholder="Thriller" /></Field>
-                <Field label="Tone"><input value={form.tone} onChange={(e) => setForm({ ...form, tone: e.target.value })} className="input" placeholder="Bleak, funny" /></Field>
+                <Field label="Genre"><input value={form.genre} onChange={(e) => setForm({ ...form, genre: e.target.value })} className={inputCls} placeholder="Thriller" /></Field>
+                <Field label="Tone"><input value={form.tone} onChange={(e) => setForm({ ...form, tone: e.target.value })} className={inputCls} placeholder="Bleak, funny" /></Field>
                 <Field label="Format">
-                  <select value={form.style} onChange={(e) => setForm({ ...form, style: e.target.value })} className="input">
+                  <select value={form.style} onChange={(e) => setForm({ ...form, style: e.target.value })} className={inputCls}>
                     {STYLES.map((s) => <option key={s} value={s}>{s}</option>)}
                   </select>
                 </Field>
                 <Field label="Language">
-                  <select value={form.language} onChange={(e) => setForm({ ...form, language: e.target.value })} className="input">
+                  <select value={form.language} onChange={(e) => setForm({ ...form, language: e.target.value })} className={inputCls}>
                     <option value="en">English</option>
                     <option value="ar">العربية</option>
                     <option value="fr">Français</option>
@@ -142,7 +144,6 @@ function StudioIndex() {
           </div>
         </div>
       )}
-      <style>{`.input{width:100%;border-radius:0.75rem;border:1px solid hsl(var(--border));background:transparent;padding:0.5rem 0.75rem;font-size:0.875rem;outline:none}`}</style>
     </div>
   );
 }
