@@ -168,8 +168,19 @@ function StudioEditor() {
     const next = !project.is_public;
     await runUpdate({ data: { id: projectId, is_public: next } });
     setProject({ ...project, is_public: next });
-    toast.success(next ? "Published publicly" : "Set to private");
+    if (next) {
+      const url = `${window.location.origin}/stories/${projectId}`;
+      try {
+        await navigator.clipboard.writeText(url);
+        toast.success("Published live — public link copied to your clipboard.");
+      } catch {
+        toast.success(`Published live at ${url}`);
+      }
+    } else {
+      toast.success("Set to private");
+    }
   };
+
 
   if (!project || !current) {
     return <div className="flex h-screen items-center justify-center"><Loader2 className="h-6 w-6 animate-spin text-primary" /></div>;
