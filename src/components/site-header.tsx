@@ -34,8 +34,13 @@ export function SiteHeader() {
           <NavLink to="/feed" active={path.startsWith("/feed")}>Feed</NavLink>
           <NavLink to="/theories" active={path.startsWith("/theories")}>Theories</NavLink>
           <NavLink to="/community" active={path.startsWith("/community")}>Community</NavLink>
+          <NavLink to="/chats" active={path.startsWith("/chats")}>Chats</NavLink>
+          <NavLink to="/studio" active={path.startsWith("/studio")}>Studio</NavLink>
+          <NavLink to="/books" active={path.startsWith("/books")}>Books</NavLink>
+          <NavLink to="/stories" active={path.startsWith("/stories")}>Stories</NavLink>
           <NavLink to="/library" active={path.startsWith("/library")}>Library</NavLink>
         </nav>
+
         <div className="flex items-center gap-2">
           <LanguageSwitcher />
           <ThemeToggle />
@@ -74,8 +79,13 @@ function MobileNav({ path }: { path: string }) {
         { to: "/feed", label: "Feed" },
         { to: "/theories", label: "Theories" },
         { to: "/community", label: "Community" },
+        { to: "/chats", label: "Chats" },
+        { to: "/studio", label: "Studio" },
+        { to: "/books", label: "Books" },
+        { to: "/stories", label: "Stories" },
         { to: "/library", label: "Library" },
       ].map((l) => (
+
         <Link
           key={l.to}
           to={l.to}

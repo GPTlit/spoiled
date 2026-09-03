@@ -28,6 +28,7 @@ import { Route as FeedPostIdRouteImport } from './routes/feed.$postId'
 import { Route as CommunitySalemRouteImport } from './routes/community.salem'
 import { Route as CommunitySlugRouteImport } from './routes/community.$slug'
 import { Route as AuthenticatedLibraryRouteImport } from './routes/_authenticated/library'
+import { Route as AuthenticatedChatsRouteImport } from './routes/_authenticated/chats'
 import { Route as AuthenticatedBooksRouteImport } from './routes/_authenticated/books'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedStudioIndexRouteImport } from './routes/_authenticated/studio.index'
@@ -129,6 +130,11 @@ const AuthenticatedLibraryRoute = AuthenticatedLibraryRouteImport.update({
   path: '/library',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedChatsRoute = AuthenticatedChatsRouteImport.update({
+  id: '/chats',
+  path: '/chats',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedBooksRoute = AuthenticatedBooksRouteImport.update({
   id: '/books',
   path: '/books',
@@ -175,6 +181,7 @@ export interface FileRoutesByFullPath {
   '/watch': typeof WatchRouteWithChildren
   '/admin': typeof AuthenticatedAdminRoute
   '/books': typeof AuthenticatedBooksRoute
+  '/chats': typeof AuthenticatedChatsRoute
   '/library': typeof AuthenticatedLibraryRoute
   '/community/$slug': typeof CommunitySlugRoute
   '/community/salem': typeof CommunitySalemRoute
@@ -201,6 +208,7 @@ export interface FileRoutesByTo {
   '/watch': typeof WatchRouteWithChildren
   '/admin': typeof AuthenticatedAdminRoute
   '/books': typeof AuthenticatedBooksRoute
+  '/chats': typeof AuthenticatedChatsRoute
   '/library': typeof AuthenticatedLibraryRoute
   '/community/$slug': typeof CommunitySlugRoute
   '/community/salem': typeof CommunitySalemRoute
@@ -229,6 +237,7 @@ export interface FileRoutesById {
   '/watch': typeof WatchRouteWithChildren
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/books': typeof AuthenticatedBooksRoute
+  '/_authenticated/chats': typeof AuthenticatedChatsRoute
   '/_authenticated/library': typeof AuthenticatedLibraryRoute
   '/community/$slug': typeof CommunitySlugRoute
   '/community/salem': typeof CommunitySalemRoute
@@ -257,6 +266,7 @@ export interface FileRouteTypes {
     | '/watch'
     | '/admin'
     | '/books'
+    | '/chats'
     | '/library'
     | '/community/$slug'
     | '/community/salem'
@@ -283,6 +293,7 @@ export interface FileRouteTypes {
     | '/watch'
     | '/admin'
     | '/books'
+    | '/chats'
     | '/library'
     | '/community/$slug'
     | '/community/salem'
@@ -310,6 +321,7 @@ export interface FileRouteTypes {
     | '/watch'
     | '/_authenticated/admin'
     | '/_authenticated/books'
+    | '/_authenticated/chats'
     | '/_authenticated/library'
     | '/community/$slug'
     | '/community/salem'
@@ -479,6 +491,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedLibraryRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/chats': {
+      id: '/_authenticated/chats'
+      path: '/chats'
+      fullPath: '/chats'
+      preLoaderRoute: typeof AuthenticatedChatsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/books': {
       id: '/_authenticated/books'
       path: '/books'
@@ -527,6 +546,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedBooksRoute: typeof AuthenticatedBooksRoute
+  AuthenticatedChatsRoute: typeof AuthenticatedChatsRoute
   AuthenticatedLibraryRoute: typeof AuthenticatedLibraryRoute
   AuthenticatedStudioProjectIdRoute: typeof AuthenticatedStudioProjectIdRoute
   AuthenticatedStudioIndexRoute: typeof AuthenticatedStudioIndexRoute
@@ -535,6 +555,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedBooksRoute: AuthenticatedBooksRoute,
+  AuthenticatedChatsRoute: AuthenticatedChatsRoute,
   AuthenticatedLibraryRoute: AuthenticatedLibraryRoute,
   AuthenticatedStudioProjectIdRoute: AuthenticatedStudioProjectIdRoute,
   AuthenticatedStudioIndexRoute: AuthenticatedStudioIndexRoute,
