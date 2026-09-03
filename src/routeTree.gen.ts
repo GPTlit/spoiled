@@ -19,13 +19,16 @@ import { Route as ContinueRouteImport } from './routes/continue'
 import { Route as AuthRouteImport } from './routes/auth'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
+import { Route as StoriesIndexRouteImport } from './routes/stories.index'
 import { Route as CommunityIndexRouteImport } from './routes/community.index'
 import { Route as WatchServiceRouteImport } from './routes/watch.$service'
+import { Route as StoriesIdRouteImport } from './routes/stories.$id'
 import { Route as OnboardingUsernameRouteImport } from './routes/onboarding.username'
 import { Route as FeedPostIdRouteImport } from './routes/feed.$postId'
 import { Route as CommunitySalemRouteImport } from './routes/community.salem'
 import { Route as CommunitySlugRouteImport } from './routes/community.$slug'
 import { Route as AuthenticatedLibraryRouteImport } from './routes/_authenticated/library'
+import { Route as AuthenticatedChatsRouteImport } from './routes/_authenticated/chats'
 import { Route as AuthenticatedBooksRouteImport } from './routes/_authenticated/books'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
 import { Route as AuthenticatedStudioIndexRouteImport } from './routes/_authenticated/studio.index'
@@ -82,6 +85,11 @@ const IndexRoute = IndexRouteImport.update({
   path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
+const StoriesIndexRoute = StoriesIndexRouteImport.update({
+  id: '/stories/',
+  path: '/stories/',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const CommunityIndexRoute = CommunityIndexRouteImport.update({
   id: '/community/',
   path: '/community/',
@@ -91,6 +99,11 @@ const WatchServiceRoute = WatchServiceRouteImport.update({
   id: '/$service',
   path: '/$service',
   getParentRoute: () => WatchRoute,
+} as any)
+const StoriesIdRoute = StoriesIdRouteImport.update({
+  id: '/stories/$id',
+  path: '/stories/$id',
+  getParentRoute: () => rootRouteImport,
 } as any)
 const OnboardingUsernameRoute = OnboardingUsernameRouteImport.update({
   id: '/onboarding/username',
@@ -115,6 +128,11 @@ const CommunitySlugRoute = CommunitySlugRouteImport.update({
 const AuthenticatedLibraryRoute = AuthenticatedLibraryRouteImport.update({
   id: '/library',
   path: '/library',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedChatsRoute = AuthenticatedChatsRouteImport.update({
+  id: '/chats',
+  path: '/chats',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedBooksRoute = AuthenticatedBooksRouteImport.update({
@@ -163,13 +181,16 @@ export interface FileRoutesByFullPath {
   '/watch': typeof WatchRouteWithChildren
   '/admin': typeof AuthenticatedAdminRoute
   '/books': typeof AuthenticatedBooksRoute
+  '/chats': typeof AuthenticatedChatsRoute
   '/library': typeof AuthenticatedLibraryRoute
   '/community/$slug': typeof CommunitySlugRoute
   '/community/salem': typeof CommunitySalemRoute
   '/feed/$postId': typeof FeedPostIdRoute
   '/onboarding/username': typeof OnboardingUsernameRoute
+  '/stories/$id': typeof StoriesIdRoute
   '/watch/$service': typeof WatchServiceRouteWithChildren
   '/community/': typeof CommunityIndexRoute
+  '/stories/': typeof StoriesIndexRoute
   '/studio/$projectId': typeof AuthenticatedStudioProjectIdRoute
   '/watch/$service/$title': typeof WatchServiceTitleRouteWithChildren
   '/studio/': typeof AuthenticatedStudioIndexRoute
@@ -187,13 +208,16 @@ export interface FileRoutesByTo {
   '/watch': typeof WatchRouteWithChildren
   '/admin': typeof AuthenticatedAdminRoute
   '/books': typeof AuthenticatedBooksRoute
+  '/chats': typeof AuthenticatedChatsRoute
   '/library': typeof AuthenticatedLibraryRoute
   '/community/$slug': typeof CommunitySlugRoute
   '/community/salem': typeof CommunitySalemRoute
   '/feed/$postId': typeof FeedPostIdRoute
   '/onboarding/username': typeof OnboardingUsernameRoute
+  '/stories/$id': typeof StoriesIdRoute
   '/watch/$service': typeof WatchServiceRouteWithChildren
   '/community': typeof CommunityIndexRoute
+  '/stories': typeof StoriesIndexRoute
   '/studio/$projectId': typeof AuthenticatedStudioProjectIdRoute
   '/watch/$service/$title': typeof WatchServiceTitleRouteWithChildren
   '/studio': typeof AuthenticatedStudioIndexRoute
@@ -213,13 +237,16 @@ export interface FileRoutesById {
   '/watch': typeof WatchRouteWithChildren
   '/_authenticated/admin': typeof AuthenticatedAdminRoute
   '/_authenticated/books': typeof AuthenticatedBooksRoute
+  '/_authenticated/chats': typeof AuthenticatedChatsRoute
   '/_authenticated/library': typeof AuthenticatedLibraryRoute
   '/community/$slug': typeof CommunitySlugRoute
   '/community/salem': typeof CommunitySalemRoute
   '/feed/$postId': typeof FeedPostIdRoute
   '/onboarding/username': typeof OnboardingUsernameRoute
+  '/stories/$id': typeof StoriesIdRoute
   '/watch/$service': typeof WatchServiceRouteWithChildren
   '/community/': typeof CommunityIndexRoute
+  '/stories/': typeof StoriesIndexRoute
   '/_authenticated/studio/$projectId': typeof AuthenticatedStudioProjectIdRoute
   '/watch/$service/$title': typeof WatchServiceTitleRouteWithChildren
   '/_authenticated/studio/': typeof AuthenticatedStudioIndexRoute
@@ -239,13 +266,16 @@ export interface FileRouteTypes {
     | '/watch'
     | '/admin'
     | '/books'
+    | '/chats'
     | '/library'
     | '/community/$slug'
     | '/community/salem'
     | '/feed/$postId'
     | '/onboarding/username'
+    | '/stories/$id'
     | '/watch/$service'
     | '/community/'
+    | '/stories/'
     | '/studio/$projectId'
     | '/watch/$service/$title'
     | '/studio/'
@@ -263,13 +293,16 @@ export interface FileRouteTypes {
     | '/watch'
     | '/admin'
     | '/books'
+    | '/chats'
     | '/library'
     | '/community/$slug'
     | '/community/salem'
     | '/feed/$postId'
     | '/onboarding/username'
+    | '/stories/$id'
     | '/watch/$service'
     | '/community'
+    | '/stories'
     | '/studio/$projectId'
     | '/watch/$service/$title'
     | '/studio'
@@ -288,13 +321,16 @@ export interface FileRouteTypes {
     | '/watch'
     | '/_authenticated/admin'
     | '/_authenticated/books'
+    | '/_authenticated/chats'
     | '/_authenticated/library'
     | '/community/$slug'
     | '/community/salem'
     | '/feed/$postId'
     | '/onboarding/username'
+    | '/stories/$id'
     | '/watch/$service'
     | '/community/'
+    | '/stories/'
     | '/_authenticated/studio/$projectId'
     | '/watch/$service/$title'
     | '/_authenticated/studio/'
@@ -315,7 +351,9 @@ export interface RootRouteChildren {
   CommunitySlugRoute: typeof CommunitySlugRoute
   CommunitySalemRoute: typeof CommunitySalemRoute
   OnboardingUsernameRoute: typeof OnboardingUsernameRoute
+  StoriesIdRoute: typeof StoriesIdRoute
   CommunityIndexRoute: typeof CommunityIndexRoute
+  StoriesIndexRoute: typeof StoriesIndexRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -390,6 +428,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
+    '/stories/': {
+      id: '/stories/'
+      path: '/stories'
+      fullPath: '/stories/'
+      preLoaderRoute: typeof StoriesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/community/': {
       id: '/community/'
       path: '/community'
@@ -403,6 +448,13 @@ declare module '@tanstack/react-router' {
       fullPath: '/watch/$service'
       preLoaderRoute: typeof WatchServiceRouteImport
       parentRoute: typeof WatchRoute
+    }
+    '/stories/$id': {
+      id: '/stories/$id'
+      path: '/stories/$id'
+      fullPath: '/stories/$id'
+      preLoaderRoute: typeof StoriesIdRouteImport
+      parentRoute: typeof rootRouteImport
     }
     '/onboarding/username': {
       id: '/onboarding/username'
@@ -437,6 +489,13 @@ declare module '@tanstack/react-router' {
       path: '/library'
       fullPath: '/library'
       preLoaderRoute: typeof AuthenticatedLibraryRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/chats': {
+      id: '/_authenticated/chats'
+      path: '/chats'
+      fullPath: '/chats'
+      preLoaderRoute: typeof AuthenticatedChatsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/books': {
@@ -487,6 +546,7 @@ declare module '@tanstack/react-router' {
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedAdminRoute: typeof AuthenticatedAdminRoute
   AuthenticatedBooksRoute: typeof AuthenticatedBooksRoute
+  AuthenticatedChatsRoute: typeof AuthenticatedChatsRoute
   AuthenticatedLibraryRoute: typeof AuthenticatedLibraryRoute
   AuthenticatedStudioProjectIdRoute: typeof AuthenticatedStudioProjectIdRoute
   AuthenticatedStudioIndexRoute: typeof AuthenticatedStudioIndexRoute
@@ -495,6 +555,7 @@ interface AuthenticatedRouteRouteChildren {
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedAdminRoute: AuthenticatedAdminRoute,
   AuthenticatedBooksRoute: AuthenticatedBooksRoute,
+  AuthenticatedChatsRoute: AuthenticatedChatsRoute,
   AuthenticatedLibraryRoute: AuthenticatedLibraryRoute,
   AuthenticatedStudioProjectIdRoute: AuthenticatedStudioProjectIdRoute,
   AuthenticatedStudioIndexRoute: AuthenticatedStudioIndexRoute,
@@ -560,7 +621,9 @@ const rootRouteChildren: RootRouteChildren = {
   CommunitySlugRoute: CommunitySlugRoute,
   CommunitySalemRoute: CommunitySalemRoute,
   OnboardingUsernameRoute: OnboardingUsernameRoute,
+  StoriesIdRoute: StoriesIdRoute,
   CommunityIndexRoute: CommunityIndexRoute,
+  StoriesIndexRoute: StoriesIndexRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
