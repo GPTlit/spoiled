@@ -70,3 +70,48 @@ export const adminBroadcast = createServerFn({ method: "POST" })
     await supabaseAdmin.from("notifications").insert(rows as never);
     return { ok: true, sent: users.length };
   });
+
+// --- Screen Writer stories: the admin can edit and publish any story live ---
+export const adminListStories = createServerFn({ method: "GET" })
+  .middleware([requireSupabaseAuth])
+  .handler(async ({ context }) => {
+    await assertAdmin(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { data } = await supabaseAdmin
+      .from("sw_projects")
+      .select("id, title, logline, style, genre, is_public, updated_at")
+      .order("updated_at", { ascending: false })
+      .limit(200);
+    return data ?? [];
+  });
+
+const StoryEdit = z.object({
+  id: z.string().uuid(),
+  title: z.string().max(120).optional(),
+  logline: z.string().max(2000).optional(),
+  is_public: z.boolean().optional(),
+});
+export const adminUpdateStory = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((v: unknown) => StoryEdit.parse(v))
+  .handler(async ({ context, data }) => {
+    await assertAdmin(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    const { id, ...fields } = data;
+    const { error } = await supabaseAdmin
+      .from("sw_projects")
+      .update({ ...fields, updated_at: new Date().toISOString() })
+      .eq("id", id);
+    if (error) throw new Error(error.message);
+    return { ok: true };
+  });
+
+export const adminDeleteStory = createServerFn({ method: "POST" })
+  .middleware([requireSupabaseAuth])
+  .inputValidator((v: unknown) => z.object({ id: z.string().uuid() }).parse(v))
+  .handler(async ({ context, data }) => {
+    await assertAdmin(context);
+    const { supabaseAdmin } = await import("@/integrations/supabase/client.server");
+    await supabaseAdmin.from("sw_projects").delete().eq("id", data.id);
+    return { ok: true };
+  });
