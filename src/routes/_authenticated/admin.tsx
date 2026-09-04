@@ -29,7 +29,9 @@ export const Route = createFileRoute("/_authenticated/admin")({
 function AdminPage() {
   const navigate = useNavigate();
   const [ok, setOk] = useState<boolean | null>(null);
-  const [tab, setTab] = useState<"users" | "posts" | "groups" | "theories" | "broadcast">("users");
+  const [tab, setTab] = useState<
+    "operator" | "users" | "posts" | "groups" | "theories" | "stories" | "broadcast"
+  >("operator");
 
   useEffect(() => {
     (async () => {
@@ -61,17 +63,19 @@ function AdminPage() {
           <h1 className="text-3xl font-bold tracking-tight">Admin</h1>
         </div>
         <div className="mt-6 flex gap-2 border-b border-border">
-          {(["users","posts","groups","theories","broadcast"] as const).map((t) => (
+          {(["operator","users","posts","groups","theories","stories","broadcast"] as const).map((t) => (
             <button key={t} onClick={() => setTab(t)} className={`px-3 py-2 text-sm capitalize ${tab === t ? "border-b-2 border-primary text-foreground" : "text-muted-foreground"}`}>
               {t}
             </button>
           ))}
         </div>
         <div className="mt-6">
+          {tab === "operator" && <OperatorTab />}
           {tab === "users" && <UsersTab />}
           {tab === "posts" && <PostsTab />}
           {tab === "groups" && <GroupsTab />}
           {tab === "theories" && <TheoriesTab />}
+          {tab === "stories" && <StoriesTab />}
           {tab === "broadcast" && <BroadcastTab />}
 
         </div>
@@ -254,6 +258,127 @@ function TheoriesTab() {
             </div>
           );
         })}
+      </div>
+    </div>
+  );
+}
+
+function StoriesTab() {
+  const run = useServerFn(adminListStories);
+  const runUpdate = useServerFn(adminUpdateStory);
+  const runDelete = useServerFn(adminDeleteStory);
+  const [rows, setRows] = useState<any[] | null>(null);
+  const [draft, setDraft] = useState<Record<string, { title: string; logline: string }>>({});
+  const refresh = () => run().then((d) => setRows(d as any[]));
+  useEffect(() => { refresh(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [run]);
+
+  if (!rows) return <div className="flex justify-center py-10"><Loader2 className="h-5 w-5 animate-spin text-primary" /></div>;
+  if (!rows.length) return <p className="text-sm text-muted-foreground">No stories yet.</p>;
+
+  return (
+    <div className="space-y-3">
+      {rows.map((s) => {
+        const d = draft[s.id] ?? { title: s.title ?? "", logline: s.logline ?? "" };
+        const dirty = d.title !== (s.title ?? "") || d.logline !== (s.logline ?? "");
+        return (
+          <div key={s.id} className="rounded-xl border border-border bg-card p-4">
+            <input
+              value={d.title}
+              onChange={(e) => setDraft({ ...draft, [s.id]: { ...d, title: e.target.value } })}
+              className="w-full rounded-lg border border-border bg-background px-3 py-2 text-sm font-semibold outline-none focus:border-primary"
+            />
+            <textarea
+              value={d.logline}
+              rows={2}
+              onChange={(e) => setDraft({ ...draft, [s.id]: { ...d, logline: e.target.value } })}
+              className="mt-2 w-full rounded-lg border border-border bg-background px-3 py-2 text-sm outline-none focus:border-primary"
+            />
+            <div className="mt-2 flex flex-wrap items-center gap-2">
+              <button
+                disabled={!dirty}
+                onClick={async () => {
+                  try { await runUpdate({ data: { id: s.id, title: d.title, logline: d.logline } }); toast.success("Saved."); refresh(); }
+                  catch (e) { toast.error((e as Error).message); }
+                }}
+                className="rounded-full bg-primary px-3 py-1 text-xs font-semibold text-primary-foreground disabled:opacity-50"
+              >Save</button>
+              <button
+                onClick={async () => {
+                  try { await runUpdate({ data: { id: s.id, is_public: !s.is_public } }); refresh(); }
+                  catch (e) { toast.error((e as Error).message); }
+                }}
+                className={`rounded-full px-3 py-1 text-xs font-semibold ${s.is_public ? "bg-verdant/25 text-verdant" : "bg-muted text-muted-foreground"}`}
+              >{s.is_public ? "Public" : "Private"}</button>
+              <button
+                onClick={async () => {
+                  if (!confirm("Delete this story?")) return;
+                  try { await runDelete({ data: { id: s.id } }); setRows((prev) => (prev ?? []).filter((x) => x.id !== s.id)); }
+                  catch (e) { toast.error((e as Error).message); }
+                }}
+                className="rounded-full bg-destructive/25 px-3 py-1 text-xs font-semibold text-destructive"
+              >Delete</button>
+            </div>
+          </div>
+        );
+      })}
+    </div>
+  );
+}
+
+function OperatorTab() {
+  const run = useServerFn(adminAgent);
+  const [msgs, setMsgs] = useState<{ role: "user" | "assistant"; content: string }[]>([]);
+  const [input, setInput] = useState("");
+  const [busy, setBusy] = useState(false);
+
+  const send = async () => {
+    const prompt = input.trim();
+    if (!prompt || busy) return;
+    setInput("");
+    const history = msgs.slice(-10);
+    setMsgs((m) => [...m, { role: "user", content: prompt }]);
+    setBusy(true);
+    try {
+      const r = await run({ data: { prompt, history } });
+      setMsgs((m) => [...m, { role: "assistant", content: r.text }]);
+    } catch (e) {
+      toast.error((e as Error).message);
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  return (
+    <div className="flex flex-col gap-3">
+      <p className="text-sm text-muted-foreground">
+        Your private control room. Tell it what to change and it changes the live site instantly — theories,
+        story publishing, bans and announcements. It can also search the web for facts first.
+      </p>
+      <div className="min-h-[240px] space-y-3 rounded-xl border border-border bg-card p-4">
+        {!msgs.length && (
+          <p className="text-sm text-muted-foreground">
+            Try: “Add three fresh theories for Severance”, “Unpublish the story called Ashfall”, or “Announce that
+            Season 3 breakdowns are live”.
+          </p>
+        )}
+        {msgs.map((m, i) => (
+          <div key={i} className={m.role === "user" ? "text-right" : ""}>
+            <div className={`inline-block max-w-[85%] whitespace-pre-wrap rounded-2xl px-4 py-2 text-sm ${m.role === "user" ? "bg-primary text-primary-foreground" : "bg-background border border-border"}`}>
+              {m.content}
+            </div>
+          </div>
+        ))}
+        {busy && <div className="flex items-center gap-2 text-xs text-muted-foreground"><Loader2 className="h-4 w-4 animate-spin" /> Working…</div>}
+      </div>
+      <div className="flex gap-2">
+        <input
+          value={input}
+          onChange={(e) => setInput(e.target.value)}
+          onKeyDown={(e) => { if (e.key === "Enter" && !e.shiftKey) { e.preventDefault(); send(); } }}
+          placeholder="Tell the operator what to change..."
+          className="flex-1 rounded-xl border border-border bg-card px-4 py-3 text-sm outline-none focus:border-primary"
+        />
+        <button onClick={send} disabled={busy || !input.trim()} className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground disabled:opacity-60">Send</button>
       </div>
     </div>
   );
