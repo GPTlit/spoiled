@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useState } from "react";
 import { SiteHeader } from "@/components/site-header";
-import { listBooks, getBook, deleteBook, generateShowBook, BOOK_STYLES } from "@/lib/books.functions";
+import { listBooks, getBook, deleteBook, startBook, writeBookChunk, finishBook, BOOK_STYLES } from "@/lib/books.functions";
 import { SERVICE_TITLES } from "@/lib/services";
 import { exportPdf, paginate } from "@/lib/pdf";
 import { BookOpen, Loader2, Download, Trash2, ArrowLeft, Sparkles } from "lucide-react";
