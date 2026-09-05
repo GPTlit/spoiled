@@ -148,15 +148,24 @@ function BooksPage() {
             </label>
           </div>
           <label>
+            <span className="mb-1 block text-xs uppercase tracking-wide text-muted-foreground">Pages</span>
+            <input type="number" min={2} max={400} step={5} value={form.pages} onChange={(e) => setForm({ ...form, pages: Number(e.target.value) })} className="w-full rounded-xl border border-border bg-background/60 px-3 py-2 text-sm outline-none" />
+          </label>
+          <label>
             <span className="mb-1 block text-xs uppercase tracking-wide text-muted-foreground">Language</span>
             <select value={form.language} onChange={(e) => setForm({ ...form, language: e.target.value })} className="w-full rounded-xl border border-border bg-background/60 px-3 py-2 text-sm outline-none">
               <option value="en">English</option><option value="ar">العربية</option><option value="fr">Français</option>
             </select>
           </label>
-          <div className="sm:col-span-5">
+          <div className="sm:col-span-5 flex flex-wrap items-center gap-3">
             <button onClick={generate} disabled={busy} className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground disabled:opacity-60">
               {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />} Write the book
             </button>
+            {progress && (
+              <span className="text-xs text-muted-foreground">
+                Pass {progress.done} of {progress.total} · about {Math.min(form.pages, progress.done * 5)} of {form.pages} pages written
+              </span>
+            )}
           </div>
         </div>
 
