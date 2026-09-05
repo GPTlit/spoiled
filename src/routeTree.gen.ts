@@ -9,68 +9,42 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as WatchRouteImport } from './routes/watch'
-import { Route as UniversesRouteImport } from './routes/universes'
-import { Route as TheoriesRouteImport } from './routes/theories'
-import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
-import { Route as FeedRouteImport } from './routes/feed'
-import { Route as DiscoverRouteImport } from './routes/discover'
-import { Route as ContinueRouteImport } from './routes/continue'
-import { Route as AuthRouteImport } from './routes/auth'
-import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as IndexRouteImport } from './routes/index'
-import { Route as StoriesIndexRouteImport } from './routes/stories.index'
-import { Route as CommunityIndexRouteImport } from './routes/community.index'
-import { Route as WatchServiceRouteImport } from './routes/watch.$service'
-import { Route as StoriesIdRouteImport } from './routes/stories.$id'
-import { Route as OnboardingUsernameRouteImport } from './routes/onboarding.username'
-import { Route as FeedPostIdRouteImport } from './routes/feed.$postId'
-import { Route as CommunitySalemRouteImport } from './routes/community.salem'
-import { Route as CommunitySlugRouteImport } from './routes/community.$slug'
-import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
-import { Route as AuthenticatedLibraryRouteImport } from './routes/_authenticated/library'
-import { Route as AuthenticatedChatsRouteImport } from './routes/_authenticated/chats'
-import { Route as AuthenticatedBooksRouteImport } from './routes/_authenticated/books'
+import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
+import { Route as AuthRouteImport } from './routes/auth'
+import { Route as ContinueRouteImport } from './routes/continue'
+import { Route as DiscoverRouteImport } from './routes/discover'
+import { Route as FeedRouteImport } from './routes/feed'
+import { Route as SitemapDotxmlRouteImport } from './routes/sitemap[.]xml'
+import { Route as TheoriesRouteImport } from './routes/theories'
+import { Route as UniversesRouteImport } from './routes/universes'
+import { Route as WatchRouteImport } from './routes/watch'
 import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/admin'
+import { Route as AuthenticatedBooksRouteImport } from './routes/_authenticated/books'
+import { Route as AuthenticatedChatsRouteImport } from './routes/_authenticated/chats'
+import { Route as AuthenticatedLibraryRouteImport } from './routes/_authenticated/library'
+import { Route as AuthenticatedProfileRouteImport } from './routes/_authenticated/profile'
+import { Route as CommunityIndexRouteImport } from './routes/community.index'
+import { Route as CommunitySlugRouteImport } from './routes/community.$slug'
+import { Route as CommunitySalemRouteImport } from './routes/community.salem'
+import { Route as FeedPostIdRouteImport } from './routes/feed.$postId'
+import { Route as OnboardingUsernameRouteImport } from './routes/onboarding.username'
+import { Route as StoriesIndexRouteImport } from './routes/stories.index'
+import { Route as StoriesIdRouteImport } from './routes/stories.$id'
+import { Route as WatchServiceRouteImport } from './routes/watch.$service'
 import { Route as AuthenticatedStudioIndexRouteImport } from './routes/_authenticated/studio.index'
-import { Route as WatchServiceTitleRouteImport } from './routes/watch.$service.$title'
 import { Route as AuthenticatedStudioProjectIdRouteImport } from './routes/_authenticated/studio.$projectId'
+import { Route as WatchServiceTitleRouteImport } from './routes/watch.$service.$title'
 import { Route as ApiPublicCronGrowLibraryRouteImport } from './routes/api/public/cron/grow-library'
 import { Route as WatchServiceTitleSeasonEpisodeRouteImport } from './routes/watch.$service.$title.$season.$episode'
 
-const WatchRoute = WatchRouteImport.update({
-  id: '/watch',
-  path: '/watch',
+const IndexRoute = IndexRouteImport.update({
+  id: '/',
+  path: '/',
   getParentRoute: () => rootRouteImport,
 } as any)
-const UniversesRoute = UniversesRouteImport.update({
-  id: '/universes',
-  path: '/universes',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const TheoriesRoute = TheoriesRouteImport.update({
-  id: '/theories',
-  path: '/theories',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
-  id: '/sitemap.xml',
-  path: '/sitemap.xml',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const FeedRoute = FeedRouteImport.update({
-  id: '/feed',
-  path: '/feed',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const DiscoverRoute = DiscoverRouteImport.update({
-  id: '/discover',
-  path: '/discover',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const ContinueRoute = ContinueRouteImport.update({
-  id: '/continue',
-  path: '/continue',
+const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
+  id: '/_authenticated',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthRoute = AuthRouteImport.update({
@@ -78,68 +52,44 @@ const AuthRoute = AuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => rootRouteImport,
 } as any)
-const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
+const ContinueRoute = ContinueRouteImport.update({
+  id: '/continue',
+  path: '/continue',
   getParentRoute: () => rootRouteImport,
 } as any)
-const IndexRoute = IndexRouteImport.update({
-  id: '/',
-  path: '/',
+const DiscoverRoute = DiscoverRouteImport.update({
+  id: '/discover',
+  path: '/discover',
   getParentRoute: () => rootRouteImport,
 } as any)
-const StoriesIndexRoute = StoriesIndexRouteImport.update({
-  id: '/stories/',
-  path: '/stories/',
+const FeedRoute = FeedRouteImport.update({
+  id: '/feed',
+  path: '/feed',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CommunityIndexRoute = CommunityIndexRouteImport.update({
-  id: '/community/',
-  path: '/community/',
+const SitemapDotxmlRoute = SitemapDotxmlRouteImport.update({
+  id: '/sitemap.xml',
+  path: '/sitemap.xml',
   getParentRoute: () => rootRouteImport,
 } as any)
-const WatchServiceRoute = WatchServiceRouteImport.update({
-  id: '/$service',
-  path: '/$service',
-  getParentRoute: () => WatchRoute,
-} as any)
-const StoriesIdRoute = StoriesIdRouteImport.update({
-  id: '/stories/$id',
-  path: '/stories/$id',
+const TheoriesRoute = TheoriesRouteImport.update({
+  id: '/theories',
+  path: '/theories',
   getParentRoute: () => rootRouteImport,
 } as any)
-const OnboardingUsernameRoute = OnboardingUsernameRouteImport.update({
-  id: '/onboarding/username',
-  path: '/onboarding/username',
+const UniversesRoute = UniversesRouteImport.update({
+  id: '/universes',
+  path: '/universes',
   getParentRoute: () => rootRouteImport,
 } as any)
-const FeedPostIdRoute = FeedPostIdRouteImport.update({
-  id: '/$postId',
-  path: '/$postId',
-  getParentRoute: () => FeedRoute,
-} as any)
-const CommunitySalemRoute = CommunitySalemRouteImport.update({
-  id: '/community/salem',
-  path: '/community/salem',
+const WatchRoute = WatchRouteImport.update({
+  id: '/watch',
+  path: '/watch',
   getParentRoute: () => rootRouteImport,
 } as any)
-const CommunitySlugRoute = CommunitySlugRouteImport.update({
-  id: '/community/$slug',
-  path: '/community/$slug',
-  getParentRoute: () => rootRouteImport,
-} as any)
-const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
-  id: '/profile',
-  path: '/profile',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedLibraryRoute = AuthenticatedLibraryRouteImport.update({
-  id: '/library',
-  path: '/library',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const AuthenticatedChatsRoute = AuthenticatedChatsRouteImport.update({
-  id: '/chats',
-  path: '/chats',
+const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
+  id: '/admin',
+  path: '/admin',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
 const AuthenticatedBooksRoute = AuthenticatedBooksRouteImport.update({
@@ -147,10 +97,60 @@ const AuthenticatedBooksRoute = AuthenticatedBooksRouteImport.update({
   path: '/books',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedAdminRoute = AuthenticatedAdminRouteImport.update({
-  id: '/admin',
-  path: '/admin',
+const AuthenticatedChatsRoute = AuthenticatedChatsRouteImport.update({
+  id: '/chats',
+  path: '/chats',
   getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedLibraryRoute = AuthenticatedLibraryRouteImport.update({
+  id: '/library',
+  path: '/library',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedProfileRoute = AuthenticatedProfileRouteImport.update({
+  id: '/profile',
+  path: '/profile',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const CommunityIndexRoute = CommunityIndexRouteImport.update({
+  id: '/community/',
+  path: '/community/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunitySlugRoute = CommunitySlugRouteImport.update({
+  id: '/community/$slug',
+  path: '/community/$slug',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const CommunitySalemRoute = CommunitySalemRouteImport.update({
+  id: '/community/salem',
+  path: '/community/salem',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const FeedPostIdRoute = FeedPostIdRouteImport.update({
+  id: '/$postId',
+  path: '/$postId',
+  getParentRoute: () => FeedRoute,
+} as any)
+const OnboardingUsernameRoute = OnboardingUsernameRouteImport.update({
+  id: '/onboarding/username',
+  path: '/onboarding/username',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StoriesIndexRoute = StoriesIndexRouteImport.update({
+  id: '/stories/',
+  path: '/stories/',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const StoriesIdRoute = StoriesIdRouteImport.update({
+  id: '/stories/$id',
+  path: '/stories/$id',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const WatchServiceRoute = WatchServiceRouteImport.update({
+  id: '/$service',
+  path: '/$service',
+  getParentRoute: () => WatchRoute,
 } as any)
 const AuthenticatedStudioIndexRoute =
   AuthenticatedStudioIndexRouteImport.update({
@@ -158,17 +158,17 @@ const AuthenticatedStudioIndexRoute =
     path: '/studio/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const WatchServiceTitleRoute = WatchServiceTitleRouteImport.update({
-  id: '/$title',
-  path: '/$title',
-  getParentRoute: () => WatchServiceRoute,
-} as any)
 const AuthenticatedStudioProjectIdRoute =
   AuthenticatedStudioProjectIdRouteImport.update({
     id: '/studio/$projectId',
     path: '/studio/$projectId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const WatchServiceTitleRoute = WatchServiceTitleRouteImport.update({
+  id: '/$title',
+  path: '/$title',
+  getParentRoute: () => WatchServiceRoute,
+} as any)
 const ApiPublicCronGrowLibraryRoute =
   ApiPublicCronGrowLibraryRouteImport.update({
     id: '/api/public/cron/grow-library',
@@ -384,60 +384,11 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/watch': {
-      id: '/watch'
-      path: '/watch'
-      fullPath: '/watch'
-      preLoaderRoute: typeof WatchRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/universes': {
-      id: '/universes'
-      path: '/universes'
-      fullPath: '/universes'
-      preLoaderRoute: typeof UniversesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/theories': {
-      id: '/theories'
-      path: '/theories'
-      fullPath: '/theories'
-      preLoaderRoute: typeof TheoriesRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/sitemap.xml': {
-      id: '/sitemap.xml'
-      path: '/sitemap.xml'
-      fullPath: '/sitemap.xml'
-      preLoaderRoute: typeof SitemapDotxmlRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/feed': {
-      id: '/feed'
-      path: '/feed'
-      fullPath: '/feed'
-      preLoaderRoute: typeof FeedRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/discover': {
-      id: '/discover'
-      path: '/discover'
-      fullPath: '/discover'
-      preLoaderRoute: typeof DiscoverRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/continue': {
-      id: '/continue'
-      path: '/continue'
-      fullPath: '/continue'
-      preLoaderRoute: typeof ContinueRouteImport
-      parentRoute: typeof rootRouteImport
-    }
-    '/auth': {
-      id: '/auth'
-      path: '/auth'
-      fullPath: '/auth'
-      preLoaderRoute: typeof AuthRouteImport
+    '/': {
+      id: '/'
+      path: '/'
+      fullPath: '/'
+      preLoaderRoute: typeof IndexRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -447,88 +398,67 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedRouteRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/': {
-      id: '/'
-      path: '/'
-      fullPath: '/'
-      preLoaderRoute: typeof IndexRouteImport
+    '/auth': {
+      id: '/auth'
+      path: '/auth'
+      fullPath: '/auth'
+      preLoaderRoute: typeof AuthRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/stories/': {
-      id: '/stories/'
-      path: '/stories'
-      fullPath: '/stories/'
-      preLoaderRoute: typeof StoriesIndexRouteImport
+    '/continue': {
+      id: '/continue'
+      path: '/continue'
+      fullPath: '/continue'
+      preLoaderRoute: typeof ContinueRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/community/': {
-      id: '/community/'
-      path: '/community'
-      fullPath: '/community/'
-      preLoaderRoute: typeof CommunityIndexRouteImport
+    '/discover': {
+      id: '/discover'
+      path: '/discover'
+      fullPath: '/discover'
+      preLoaderRoute: typeof DiscoverRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/watch/$service': {
-      id: '/watch/$service'
-      path: '/$service'
-      fullPath: '/watch/$service'
-      preLoaderRoute: typeof WatchServiceRouteImport
-      parentRoute: typeof WatchRoute
-    }
-    '/stories/$id': {
-      id: '/stories/$id'
-      path: '/stories/$id'
-      fullPath: '/stories/$id'
-      preLoaderRoute: typeof StoriesIdRouteImport
+    '/feed': {
+      id: '/feed'
+      path: '/feed'
+      fullPath: '/feed'
+      preLoaderRoute: typeof FeedRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/onboarding/username': {
-      id: '/onboarding/username'
-      path: '/onboarding/username'
-      fullPath: '/onboarding/username'
-      preLoaderRoute: typeof OnboardingUsernameRouteImport
+    '/sitemap.xml': {
+      id: '/sitemap.xml'
+      path: '/sitemap.xml'
+      fullPath: '/sitemap.xml'
+      preLoaderRoute: typeof SitemapDotxmlRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/feed/$postId': {
-      id: '/feed/$postId'
-      path: '/$postId'
-      fullPath: '/feed/$postId'
-      preLoaderRoute: typeof FeedPostIdRouteImport
-      parentRoute: typeof FeedRoute
-    }
-    '/community/salem': {
-      id: '/community/salem'
-      path: '/community/salem'
-      fullPath: '/community/salem'
-      preLoaderRoute: typeof CommunitySalemRouteImport
+    '/theories': {
+      id: '/theories'
+      path: '/theories'
+      fullPath: '/theories'
+      preLoaderRoute: typeof TheoriesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/community/$slug': {
-      id: '/community/$slug'
-      path: '/community/$slug'
-      fullPath: '/community/$slug'
-      preLoaderRoute: typeof CommunitySlugRouteImport
+    '/universes': {
+      id: '/universes'
+      path: '/universes'
+      fullPath: '/universes'
+      preLoaderRoute: typeof UniversesRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/profile': {
-      id: '/_authenticated/profile'
-      path: '/profile'
-      fullPath: '/profile'
-      preLoaderRoute: typeof AuthenticatedProfileRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
+    '/watch': {
+      id: '/watch'
+      path: '/watch'
+      fullPath: '/watch'
+      preLoaderRoute: typeof WatchRouteImport
+      parentRoute: typeof rootRouteImport
     }
-    '/_authenticated/library': {
-      id: '/_authenticated/library'
-      path: '/library'
-      fullPath: '/library'
-      preLoaderRoute: typeof AuthenticatedLibraryRouteImport
-      parentRoute: typeof AuthenticatedRouteRoute
-    }
-    '/_authenticated/chats': {
-      id: '/_authenticated/chats'
-      path: '/chats'
-      fullPath: '/chats'
-      preLoaderRoute: typeof AuthenticatedChatsRouteImport
+    '/_authenticated/admin': {
+      id: '/_authenticated/admin'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AuthenticatedAdminRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/books': {
@@ -538,12 +468,82 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBooksRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/admin': {
-      id: '/_authenticated/admin'
-      path: '/admin'
-      fullPath: '/admin'
-      preLoaderRoute: typeof AuthenticatedAdminRouteImport
+    '/_authenticated/chats': {
+      id: '/_authenticated/chats'
+      path: '/chats'
+      fullPath: '/chats'
+      preLoaderRoute: typeof AuthenticatedChatsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/library': {
+      id: '/_authenticated/library'
+      path: '/library'
+      fullPath: '/library'
+      preLoaderRoute: typeof AuthenticatedLibraryRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profile': {
+      id: '/_authenticated/profile'
+      path: '/profile'
+      fullPath: '/profile'
+      preLoaderRoute: typeof AuthenticatedProfileRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/community/': {
+      id: '/community/'
+      path: '/community'
+      fullPath: '/community/'
+      preLoaderRoute: typeof CommunityIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community/$slug': {
+      id: '/community/$slug'
+      path: '/community/$slug'
+      fullPath: '/community/$slug'
+      preLoaderRoute: typeof CommunitySlugRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/community/salem': {
+      id: '/community/salem'
+      path: '/community/salem'
+      fullPath: '/community/salem'
+      preLoaderRoute: typeof CommunitySalemRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/feed/$postId': {
+      id: '/feed/$postId'
+      path: '/$postId'
+      fullPath: '/feed/$postId'
+      preLoaderRoute: typeof FeedPostIdRouteImport
+      parentRoute: typeof FeedRoute
+    }
+    '/onboarding/username': {
+      id: '/onboarding/username'
+      path: '/onboarding/username'
+      fullPath: '/onboarding/username'
+      preLoaderRoute: typeof OnboardingUsernameRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stories/': {
+      id: '/stories/'
+      path: '/stories'
+      fullPath: '/stories/'
+      preLoaderRoute: typeof StoriesIndexRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/stories/$id': {
+      id: '/stories/$id'
+      path: '/stories/$id'
+      fullPath: '/stories/$id'
+      preLoaderRoute: typeof StoriesIdRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/watch/$service': {
+      id: '/watch/$service'
+      path: '/$service'
+      fullPath: '/watch/$service'
+      preLoaderRoute: typeof WatchServiceRouteImport
+      parentRoute: typeof WatchRoute
     }
     '/_authenticated/studio/': {
       id: '/_authenticated/studio/'
@@ -552,19 +552,19 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStudioIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/watch/$service/$title': {
-      id: '/watch/$service/$title'
-      path: '/$title'
-      fullPath: '/watch/$service/$title'
-      preLoaderRoute: typeof WatchServiceTitleRouteImport
-      parentRoute: typeof WatchServiceRoute
-    }
     '/_authenticated/studio/$projectId': {
       id: '/_authenticated/studio/$projectId'
       path: '/studio/$projectId'
       fullPath: '/studio/$projectId'
       preLoaderRoute: typeof AuthenticatedStudioProjectIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/watch/$service/$title': {
+      id: '/watch/$service/$title'
+      path: '/$title'
+      fullPath: '/watch/$service/$title'
+      preLoaderRoute: typeof WatchServiceTitleRouteImport
+      parentRoute: typeof WatchServiceRoute
     }
     '/api/public/cron/grow-library': {
       id: '/api/public/cron/grow-library'
