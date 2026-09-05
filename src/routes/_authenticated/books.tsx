@@ -2,7 +2,7 @@ import { createFileRoute } from "@tanstack/react-router";
 import { useServerFn } from "@tanstack/react-start";
 import { useEffect, useMemo, useState } from "react";
 import { SiteHeader } from "@/components/site-header";
-import { listBooks, getBook, deleteBook, generateShowBook, BOOK_STYLES } from "@/lib/books.functions";
+import { listBooks, getBook, deleteBook, startBook, writeBookChunk, finishBook, BOOK_STYLES } from "@/lib/books.functions";
 import { SERVICE_TITLES } from "@/lib/services";
 import { exportPdf, paginate } from "@/lib/pdf";
 import { BookOpen, Loader2, Download, Trash2, ArrowLeft, Sparkles } from "lucide-react";
@@ -30,13 +30,16 @@ function BooksPage() {
   const runList = useServerFn(listBooks);
   const runGet = useServerFn(getBook);
   const runDelete = useServerFn(deleteBook);
-  const runGenerate = useServerFn(generateShowBook);
+  const runStart = useServerFn(startBook);
+  const runChunk = useServerFn(writeBookChunk);
+  const runFinish = useServerFn(finishBook);
 
   const [books, setBooks] = useState<BookRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
   const [open, setOpen] = useState<{ show_title: string; content: string; cover_url: string | null; credits: string } | null>(null);
-  const [form, setForm] = useState({ showTitle: "", style: "Cinematic", seasonFrom: 1, seasonTo: 1, language: "en" });
+  const [form, setForm] = useState({ showTitle: "", style: "Cinematic", seasonFrom: 1, seasonTo: 5, pages: 40, language: "en" });
 
   const poster = useMemo(
     () => ALL_TITLES.find((t) => t.title.toLowerCase() === form.showTitle.trim().toLowerCase())?.poster ?? null,
@@ -49,14 +52,31 @@ function BooksPage() {
   const generate = async () => {
     if (!form.showTitle.trim()) return toast.error("Pick a show first.");
     setBusy(true);
-    toast.info("Writing the book — a few minutes for multiple seasons.");
+    const input = { ...form, coverUrl: poster };
     try {
-      await runGenerate({ data: { ...form, coverUrl: poster, creator: "" } });
+      const { id, chunks } = await runStart({ data: input });
+      setProgress({ done: 0, total: chunks });
+      toast.info(`Writing ${form.pages} pages — this runs in ${chunks} passes.`);
+      for (let i = 0; i < chunks; i++) {
+        let ok = false;
+        for (let attempt = 0; attempt < 2 && !ok; attempt++) {
+          try {
+            await runChunk({ data: { ...input, id, index: i, chunks } });
+            ok = true;
+          } catch (err) {
+            if (attempt === 1) throw err;
+          }
+        }
+        setProgress({ done: i + 1, total: chunks });
+      }
+      await runFinish({ data: { id, showTitle: form.showTitle } });
       toast.success("Your book is ready");
       refresh();
     } catch (e) {
-      toast.error((e as Error).message);
+      toast.error((e as Error).message || "The book stopped early — open it to read what was written.");
+      refresh();
     } finally {
+      setProgress(null);
       setBusy(false);
     }
   };
@@ -128,15 +148,24 @@ function BooksPage() {
             </label>
           </div>
           <label>
+            <span className="mb-1 block text-xs uppercase tracking-wide text-muted-foreground">Pages</span>
+            <input type="number" min={2} max={400} step={5} value={form.pages} onChange={(e) => setForm({ ...form, pages: Number(e.target.value) })} className="w-full rounded-xl border border-border bg-background/60 px-3 py-2 text-sm outline-none" />
+          </label>
+          <label>
             <span className="mb-1 block text-xs uppercase tracking-wide text-muted-foreground">Language</span>
             <select value={form.language} onChange={(e) => setForm({ ...form, language: e.target.value })} className="w-full rounded-xl border border-border bg-background/60 px-3 py-2 text-sm outline-none">
               <option value="en">English</option><option value="ar">العربية</option><option value="fr">Français</option>
             </select>
           </label>
-          <div className="sm:col-span-5">
+          <div className="sm:col-span-5 flex flex-wrap items-center gap-3">
             <button onClick={generate} disabled={busy} className="inline-flex items-center gap-2 rounded-xl bg-primary px-5 py-2.5 text-sm font-semibold text-primary-foreground disabled:opacity-60">
               {busy ? <Loader2 className="h-4 w-4 animate-spin" /> : <Sparkles className="h-4 w-4" />} Write the book
             </button>
+            {progress && (
+              <span className="text-xs text-muted-foreground">
+                Pass {progress.done} of {progress.total} · about {Math.min(form.pages, progress.done * 5)} of {form.pages} pages written
+              </span>
+            )}
           </div>
         </div>
 

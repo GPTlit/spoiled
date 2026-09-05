@@ -38,6 +38,72 @@ export type Database = {
         }
         Relationships: []
       }
+      catalog_sync_runs: {
+        Row: {
+          added: number
+          created_at: string
+          id: string
+          note: string | null
+          scanned: number
+        }
+        Insert: {
+          added?: number
+          created_at?: string
+          id?: string
+          note?: string | null
+          scanned?: number
+        }
+        Update: {
+          added?: number
+          created_at?: string
+          id?: string
+          note?: string | null
+          scanned?: number
+        }
+        Relationships: []
+      }
+      catalog_titles: {
+        Row: {
+          created_at: string
+          description: string | null
+          genres: string[]
+          id: string
+          kind: string
+          popularity: number
+          poster: string | null
+          service: string
+          slug: string
+          title: string
+          year: number | null
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          genres?: string[]
+          id?: string
+          kind?: string
+          popularity?: number
+          poster?: string | null
+          service: string
+          slug: string
+          title: string
+          year?: number | null
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          genres?: string[]
+          id?: string
+          kind?: string
+          popularity?: number
+          poster?: string | null
+          service?: string
+          slug?: string
+          title?: string
+          year?: number | null
+        }
+        Relationships: []
+      }
       continuations: {
         Row: {
           content: string
