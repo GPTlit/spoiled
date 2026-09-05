@@ -30,13 +30,16 @@ function BooksPage() {
   const runList = useServerFn(listBooks);
   const runGet = useServerFn(getBook);
   const runDelete = useServerFn(deleteBook);
-  const runGenerate = useServerFn(generateShowBook);
+  const runStart = useServerFn(startBook);
+  const runChunk = useServerFn(writeBookChunk);
+  const runFinish = useServerFn(finishBook);
 
   const [books, setBooks] = useState<BookRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [busy, setBusy] = useState(false);
+  const [progress, setProgress] = useState<{ done: number; total: number } | null>(null);
   const [open, setOpen] = useState<{ show_title: string; content: string; cover_url: string | null; credits: string } | null>(null);
-  const [form, setForm] = useState({ showTitle: "", style: "Cinematic", seasonFrom: 1, seasonTo: 1, language: "en" });
+  const [form, setForm] = useState({ showTitle: "", style: "Cinematic", seasonFrom: 1, seasonTo: 5, pages: 40, language: "en" });
 
   const poster = useMemo(
     () => ALL_TITLES.find((t) => t.title.toLowerCase() === form.showTitle.trim().toLowerCase())?.poster ?? null,
