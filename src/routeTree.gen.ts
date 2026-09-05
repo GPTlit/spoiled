@@ -35,6 +35,7 @@ import { Route as AuthenticatedAdminRouteImport } from './routes/_authenticated/
 import { Route as AuthenticatedStudioIndexRouteImport } from './routes/_authenticated/studio.index'
 import { Route as WatchServiceTitleRouteImport } from './routes/watch.$service.$title'
 import { Route as AuthenticatedStudioProjectIdRouteImport } from './routes/_authenticated/studio.$projectId'
+import { Route as ApiPublicCronGrowLibraryRouteImport } from './routes/api/public/cron/grow-library'
 import { Route as WatchServiceTitleSeasonEpisodeRouteImport } from './routes/watch.$service.$title.$season.$episode'
 
 const WatchRoute = WatchRouteImport.update({
@@ -168,6 +169,12 @@ const AuthenticatedStudioProjectIdRoute =
     path: '/studio/$projectId',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const ApiPublicCronGrowLibraryRoute =
+  ApiPublicCronGrowLibraryRouteImport.update({
+    id: '/api/public/cron/grow-library',
+    path: '/api/public/cron/grow-library',
+    getParentRoute: () => rootRouteImport,
+  } as any)
 const WatchServiceTitleSeasonEpisodeRoute =
   WatchServiceTitleSeasonEpisodeRouteImport.update({
     id: '/$season/$episode',
@@ -201,6 +208,7 @@ export interface FileRoutesByFullPath {
   '/studio/$projectId': typeof AuthenticatedStudioProjectIdRoute
   '/watch/$service/$title': typeof WatchServiceTitleRouteWithChildren
   '/studio/': typeof AuthenticatedStudioIndexRoute
+  '/api/public/cron/grow-library': typeof ApiPublicCronGrowLibraryRoute
   '/watch/$service/$title/$season/$episode': typeof WatchServiceTitleSeasonEpisodeRoute
 }
 export interface FileRoutesByTo {
@@ -229,6 +237,7 @@ export interface FileRoutesByTo {
   '/studio/$projectId': typeof AuthenticatedStudioProjectIdRoute
   '/watch/$service/$title': typeof WatchServiceTitleRouteWithChildren
   '/studio': typeof AuthenticatedStudioIndexRoute
+  '/api/public/cron/grow-library': typeof ApiPublicCronGrowLibraryRoute
   '/watch/$service/$title/$season/$episode': typeof WatchServiceTitleSeasonEpisodeRoute
 }
 export interface FileRoutesById {
@@ -259,6 +268,7 @@ export interface FileRoutesById {
   '/_authenticated/studio/$projectId': typeof AuthenticatedStudioProjectIdRoute
   '/watch/$service/$title': typeof WatchServiceTitleRouteWithChildren
   '/_authenticated/studio/': typeof AuthenticatedStudioIndexRoute
+  '/api/public/cron/grow-library': typeof ApiPublicCronGrowLibraryRoute
   '/watch/$service/$title/$season/$episode': typeof WatchServiceTitleSeasonEpisodeRoute
 }
 export interface FileRouteTypes {
@@ -289,6 +299,7 @@ export interface FileRouteTypes {
     | '/studio/$projectId'
     | '/watch/$service/$title'
     | '/studio/'
+    | '/api/public/cron/grow-library'
     | '/watch/$service/$title/$season/$episode'
   fileRoutesByTo: FileRoutesByTo
   to:
@@ -317,6 +328,7 @@ export interface FileRouteTypes {
     | '/studio/$projectId'
     | '/watch/$service/$title'
     | '/studio'
+    | '/api/public/cron/grow-library'
     | '/watch/$service/$title/$season/$episode'
   id:
     | '__root__'
@@ -346,6 +358,7 @@ export interface FileRouteTypes {
     | '/_authenticated/studio/$projectId'
     | '/watch/$service/$title'
     | '/_authenticated/studio/'
+    | '/api/public/cron/grow-library'
     | '/watch/$service/$title/$season/$episode'
   fileRoutesById: FileRoutesById
 }
@@ -366,6 +379,7 @@ export interface RootRouteChildren {
   StoriesIdRoute: typeof StoriesIdRoute
   CommunityIndexRoute: typeof CommunityIndexRoute
   StoriesIndexRoute: typeof StoriesIndexRoute
+  ApiPublicCronGrowLibraryRoute: typeof ApiPublicCronGrowLibraryRoute
 }
 
 declare module '@tanstack/react-router' {
@@ -552,6 +566,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedStudioProjectIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/api/public/cron/grow-library': {
+      id: '/api/public/cron/grow-library'
+      path: '/api/public/cron/grow-library'
+      fullPath: '/api/public/cron/grow-library'
+      preLoaderRoute: typeof ApiPublicCronGrowLibraryRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/watch/$service/$title/$season/$episode': {
       id: '/watch/$service/$title/$season/$episode'
       path: '/$season/$episode'
@@ -645,6 +666,7 @@ const rootRouteChildren: RootRouteChildren = {
   StoriesIdRoute: StoriesIdRoute,
   CommunityIndexRoute: CommunityIndexRoute,
   StoriesIndexRoute: StoriesIndexRoute,
+  ApiPublicCronGrowLibraryRoute: ApiPublicCronGrowLibraryRoute,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
