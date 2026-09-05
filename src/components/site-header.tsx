@@ -4,19 +4,31 @@ import { supabase } from "@/integrations/supabase/client";
 import { ThemeToggle } from "./theme-toggle";
 import { NotificationsBell } from "./notifications-bell";
 import { LanguageSwitcher } from "./language-switcher";
-import { LogOut } from "lucide-react";
+import { LogOut, User, BookOpen, Library, Shield, ChevronDown } from "lucide-react";
+
+const ADMIN_EMAIL = "salemmoustapha15@gmail.com";
 
 export function SiteHeader() {
   const [userId, setUserId] = useState<string | null>(null);
+  const [email, setEmail] = useState<string | null>(null);
+  const [menu, setMenu] = useState(false);
   const path = useRouterState({ select: (s) => s.location.pathname });
 
   useEffect(() => {
-    supabase.auth.getUser().then(({ data }) => setUserId(data.user?.id ?? null));
+    supabase.auth.getUser().then(({ data }) => {
+      setUserId(data.user?.id ?? null);
+      setEmail(data.user?.email ?? null);
+    });
     const { data: sub } = supabase.auth.onAuthStateChange((_e, session) => {
       setUserId(session?.user?.id ?? null);
+      setEmail(session?.user?.email ?? null);
     });
     return () => sub.subscription.unsubscribe();
   }, []);
+
+  useEffect(() => setMenu(false), [path]);
+
+  const isAdmin = (email ?? "").toLowerCase() === ADMIN_EMAIL;
 
   return (
     <header className="sticky top-0 z-40 border-b border-border/60 bg-background/80 backdrop-blur-xl">
