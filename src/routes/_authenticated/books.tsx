@@ -52,14 +52,31 @@ function BooksPage() {
   const generate = async () => {
     if (!form.showTitle.trim()) return toast.error("Pick a show first.");
     setBusy(true);
-    toast.info("Writing the book — a few minutes for multiple seasons.");
+    const input = { ...form, coverUrl: poster };
     try {
-      await runGenerate({ data: { ...form, coverUrl: poster, creator: "" } });
+      const { id, chunks } = await runStart({ data: input });
+      setProgress({ done: 0, total: chunks });
+      toast.info(`Writing ${form.pages} pages — this runs in ${chunks} passes.`);
+      for (let i = 0; i < chunks; i++) {
+        let ok = false;
+        for (let attempt = 0; attempt < 2 && !ok; attempt++) {
+          try {
+            await runChunk({ data: { ...input, id, index: i, chunks } });
+            ok = true;
+          } catch (err) {
+            if (attempt === 1) throw err;
+          }
+        }
+        setProgress({ done: i + 1, total: chunks });
+      }
+      await runFinish({ data: { id, showTitle: form.showTitle } });
       toast.success("Your book is ready");
       refresh();
     } catch (e) {
-      toast.error((e as Error).message);
+      toast.error((e as Error).message || "The book stopped early — open it to read what was written.");
+      refresh();
     } finally {
+      setProgress(null);
       setBusy(false);
     }
   };
