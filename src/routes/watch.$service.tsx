@@ -1,8 +1,11 @@
 import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { SiteHeader } from "@/components/site-header";
+import { supabase } from "@/integrations/supabase/client";
 import { SERVICE_TITLES, findService, slugify } from "@/lib/services";
 import { Search } from "lucide-react";
+
+type CatalogRow = { title: string; slug: string; year: number | null; poster: string | null; description: string | null; genres: string[] };
 
 export const Route = createFileRoute("/watch/$service")({
   component: ServicePage,
