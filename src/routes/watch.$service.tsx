@@ -29,8 +29,34 @@ function ServicePage() {
   const { service } = Route.useParams();
   const navigate = useNavigate();
   const s = findService(service);
-  const titles = SERVICE_TITLES[service] ?? [];
   const [q, setQ] = useState("");
+  const [extra, setExtra] = useState<CatalogRow[]>([]);
+
+  useEffect(() => {
+    let alive = true;
+    supabase
+      .from("catalog_titles")
+      .select("title, slug, year, poster, description, genres")
+      .eq("service", service)
+      .order("popularity", { ascending: false })
+      .limit(200)
+      .then(({ data }) => { if (alive && data) setExtra(data as CatalogRow[]); });
+    return () => { alive = false; };
+  }, [service]);
+
+  const titles = useMemo(() => {
+    const base = (SERVICE_TITLES[service] ?? []).map((t) => ({
+      title: t.title, slug: slugify(t.title), year: t.year ?? null, poster: t.poster,
+      description: t.description ?? "", genres: t.genres ?? [],
+    }));
+    const seen = new Set(base.map((b) => b.slug));
+    for (const r of extra) {
+      if (seen.has(r.slug) || !r.poster) continue;
+      seen.add(r.slug);
+      base.push({ title: r.title, slug: r.slug, year: r.year, poster: r.poster, description: r.description ?? "", genres: r.genres ?? [] });
+    }
+    return base;
+  }, [service, extra]);
 
   if (!s) return <div className="p-10">Unknown service.</div>;
 
