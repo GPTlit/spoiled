@@ -71,6 +71,7 @@ function AdminPage() {
         </div>
         <div className="mt-6">
           {tab === "operator" && <OperatorTab />}
+          {tab === "library" && <LibraryTab />}
           {tab === "users" && <UsersTab />}
           {tab === "posts" && <PostsTab />}
           {tab === "groups" && <GroupsTab />}
