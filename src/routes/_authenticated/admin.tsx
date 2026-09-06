@@ -30,7 +30,7 @@ function AdminPage() {
   const navigate = useNavigate();
   const [ok, setOk] = useState<boolean | null>(null);
   const [tab, setTab] = useState<
-    "operator" | "users" | "posts" | "groups" | "theories" | "stories" | "broadcast"
+    "operator" | "library" | "users" | "posts" | "groups" | "theories" | "stories" | "broadcast"
   >("operator");
 
   useEffect(() => {
