@@ -63,7 +63,7 @@ function AdminPage() {
           <h1 className="text-3xl font-bold tracking-tight">Admin</h1>
         </div>
         <div className="mt-6 flex gap-2 border-b border-border">
-          {(["operator","users","posts","groups","theories","stories","broadcast"] as const).map((t) => (
+          {(["operator","library","users","posts","groups","theories","stories","broadcast"] as const).map((t) => (
             <button key={t} onClick={() => setTab(t)} className={`px-3 py-2 text-sm capitalize ${tab === t ? "border-b-2 border-primary text-foreground" : "text-muted-foreground"}`}>
               {t}
             </button>
