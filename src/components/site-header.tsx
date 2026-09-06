@@ -59,13 +59,30 @@ export function SiteHeader() {
           {userId ? (
             <>
               <NotificationsBell userId={userId} />
-              <button
-                onClick={() => supabase.auth.signOut()}
-                className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 text-xs text-muted-foreground hover:text-foreground"
-              >
-                <LogOut className="h-3.5 w-3.5" />
-                <span className="hidden sm:inline">Sign out</span>
-              </button>
+              <div className="relative">
+                <button
+                  onClick={() => setMenu((m) => !m)}
+                  className="inline-flex h-9 items-center gap-1.5 rounded-full border border-border bg-card/60 px-3 text-xs text-muted-foreground hover:text-foreground"
+                >
+                  <User className="h-3.5 w-3.5" />
+                  <span className="hidden sm:inline">Account</span>
+                  <ChevronDown className="h-3.5 w-3.5" />
+                </button>
+                {menu && (
+                  <div className="absolute right-0 z-50 mt-2 w-52 overflow-hidden rounded-xl border border-border bg-card shadow-xl">
+                    <MenuItem to="/profile" icon={<User className="h-4 w-4" />} label="Profile" />
+                    <MenuItem to="/library" icon={<Library className="h-4 w-4" />} label="My library" />
+                    <MenuItem to="/books" icon={<BookOpen className="h-4 w-4" />} label="Books" />
+                    {isAdmin && <MenuItem to="/admin" icon={<Shield className="h-4 w-4" />} label="Admin panel" />}
+                    <button
+                      onClick={() => supabase.auth.signOut()}
+                      className="flex w-full items-center gap-2 border-t border-border px-3 py-2.5 text-left text-sm text-muted-foreground hover:bg-background hover:text-foreground"
+                    >
+                      <LogOut className="h-4 w-4" /> Sign out
+                    </button>
+                  </div>
+                )}
+              </div>
             </>
           ) : (
             <Link
@@ -123,6 +140,15 @@ function NavLink({ to, active, children }: { to: string; active: boolean; childr
       }`}
     >
       {children}
+    </Link>
+  );
+}
+
+function MenuItem({ to, icon, label }: { to: string; icon: React.ReactNode; label: string }) {
+  return (
+    <Link to={to} className="flex items-center gap-2 px-3 py-2.5 text-sm text-muted-foreground hover:bg-background hover:text-foreground">
+      {icon}
+      {label}
     </Link>
   );
 }

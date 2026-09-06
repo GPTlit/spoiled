@@ -62,7 +62,11 @@ export async function growLibrary(pages = 3): Promise<SyncResult> {
   const offset = ((count ?? 0) * pages) % 60;
 
   let scanned = 0;
-  const rows: Record<string, unknown>[] = [];
+  type CatalogInsert = {
+    service: string; title: string; slug: string; year: number | null;
+    poster: string | null; description: string; genres: string[]; popularity: number;
+  };
+  const rows: CatalogInsert[] = [];
   const seen = new Set<string>();
 
   for (let i = 0; i < pages; i++) {
