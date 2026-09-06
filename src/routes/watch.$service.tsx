@@ -87,13 +87,13 @@ function ServicePage() {
           <button type="submit" className="rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:brightness-110">Go</button>
         </form>
 
-        <h2 className="mt-8 text-lg font-semibold">Popular on {s.name}</h2>
+        <h2 className="mt-8 text-lg font-semibold">Popular on {s.name} <span className="text-xs font-normal text-muted-foreground">({titles.length} titles)</span></h2>
         <div className="mt-3 grid grid-cols-2 gap-4 sm:grid-cols-3 lg:grid-cols-4">
           {titles.map((t) => (
             <Link
-              key={t.title}
+              key={t.slug}
               to="/watch/$service/$title"
-              params={{ service, title: slugify(t.title) }}
+              params={{ service, title: t.slug }}
               search={{ q: t.title }}
               className="group overflow-hidden rounded-xl border border-border bg-card transition hover:border-primary/60"
             >
