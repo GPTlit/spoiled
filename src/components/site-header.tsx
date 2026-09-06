@@ -143,3 +143,12 @@ function NavLink({ to, active, children }: { to: string; active: boolean; childr
     </Link>
   );
 }
+
+function MenuItem({ to, icon, label }: { to: string; icon: React.ReactNode; label: string }) {
+  return (
+    <Link to={to} className="flex items-center gap-2 px-3 py-2.5 text-sm text-muted-foreground hover:bg-background hover:text-foreground">
+      {icon}
+      {label}
+    </Link>
+  );
+}
