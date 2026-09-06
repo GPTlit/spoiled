@@ -13,6 +13,7 @@ import {
   adminDeleteStory,
 } from "@/lib/admin.functions";
 import { adminAgent } from "@/lib/admin-ai.functions";
+import { growLibraryNow, listSyncRuns } from "@/lib/catalog.functions";
 import { listGroups } from "@/lib/community.functions";
 import { listFeed } from "@/lib/feed.functions";
 import { adminDeleteGroup } from "@/lib/admin.functions";
@@ -399,6 +400,61 @@ function BroadcastTab() {
         onClick={async () => { setBusy(true); try { const r = await run({ data: { message: msg.trim() } }); toast.success(`Sent to ${r.sent} users.`); setMsg(""); } catch (e) { toast.error((e as Error).message); } finally { setBusy(false); } }}
         className="mt-3 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:brightness-110 disabled:opacity-60"
       >Broadcast</button>
+    </div>
+  );
+}
+
+function LibraryTab() {
+  const runGrow = useServerFn(growLibraryNow);
+  const runRuns = useServerFn(listSyncRuns);
+  const [runs, setRuns] = useState<any[] | null>(null);
+  const [busy, setBusy] = useState(false);
+  const refresh = () => runRuns().then((d) => setRuns(d as any[]));
+  useEffect(() => { refresh(); /* eslint-disable-next-line react-hooks/exhaustive-deps */ }, [runRuns]);
+
+  return (
+    <div className="space-y-5">
+      <div className="rounded-xl border border-border bg-card p-4">
+        <div className="text-sm font-semibold">Auto-growing library</div>
+        <p className="mt-1 text-sm text-muted-foreground">
+          New shows, posters and descriptions are pulled in automatically every day and added to the streaming
+          platform pages. You can also run it right now.
+        </p>
+        <button
+          disabled={busy}
+          onClick={async () => {
+            setBusy(true);
+            try { const r = await runGrow({ data: { pages: 4 } }); toast.success(`Added ${r.added} new titles.`); refresh(); }
+            catch (e) { toast.error((e as Error).message); }
+            finally { setBusy(false); }
+          }}
+          className="mt-3 rounded-xl bg-primary px-4 py-2 text-sm font-semibold text-primary-foreground hover:brightness-110 disabled:opacity-60"
+        >{busy ? "Growing…" : "Grow now"}</button>
+      </div>
+
+      {!runs ? (
+        <div className="flex justify-center py-8"><Loader2 className="h-5 w-5 animate-spin text-primary" /></div>
+      ) : !runs.length ? (
+        <p className="text-sm text-muted-foreground">No runs yet.</p>
+      ) : (
+        <div className="overflow-hidden rounded-xl border border-border">
+          <table className="w-full text-sm">
+            <thead className="bg-card text-xs uppercase text-muted-foreground">
+              <tr><th className="p-3 text-left">When</th><th className="p-3 text-left">Added</th><th className="p-3 text-left">Scanned</th><th className="p-3 text-left">Source</th></tr>
+            </thead>
+            <tbody>
+              {runs.map((r) => (
+                <tr key={r.id} className="border-t border-border">
+                  <td className="p-3 text-muted-foreground">{new Date(r.created_at).toLocaleString()}</td>
+                  <td className="p-3 font-medium">{r.added}</td>
+                  <td className="p-3 text-muted-foreground">{r.scanned}</td>
+                  <td className="p-3 text-muted-foreground">{r.note}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+      )}
     </div>
   );
 }
